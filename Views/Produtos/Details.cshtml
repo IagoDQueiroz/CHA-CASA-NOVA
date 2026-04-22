@@ -1,0 +1,254 @@
+﻿@model CHA_CASA_NOVA_ADRIANA.Models.Produto
+
+@{
+    ViewData["Title"] = "Detalhes do Produto";
+    var adminLogado = Context.Session.GetString("AdminLogado") == "true";
+}
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" />
+
+<style>
+    .legenda-entrega {
+        margin-top: 14px;
+        padding-left: 4px;
+        font-size: 0.90rem;
+        line-height: 1.6;
+        color: rgba(0, 0, 0, 0.80);
+    }
+
+    .legenda-entrega p {
+        margin-bottom: 6px;
+    }
+
+    .legenda-entrega strong {
+        font-weight: 600;
+        color: rgba(0, 0, 0, 0.88);
+    }
+
+    .legenda-link {
+        color: rgba(0, 0, 0, 0.80);
+        text-decoration: none;
+        transition: 0.2s ease;
+    }
+
+    .legenda-link:hover {
+        color: rgba(0, 0, 0, 1);
+        text-decoration: underline;
+    }
+</style>
+
+<div class="pagina-formulario">
+    <div class="form-container">
+
+        <div class="topo-formulario">
+            <h1>Detalhes do Produto</h1>
+            <p>Visualize as informações completas deste item da lista</p>
+        </div>
+
+        @if (TempData["MensagemSucesso"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["MensagemSucesso"]
+            </div>
+        }
+
+        @if (TempData["MensagemErro"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["MensagemErro"]
+            </div>
+        }
+
+        <div class="card-details-produto">
+
+            <div class="details-imagem-area">
+                <img src="@Model.ImagemUrl" alt="@Model.Nome" class="details-imagem" />
+
+                <div class="legenda-entrega">
+                    <p>
+                        <strong>Endereço:</strong> Rua Professora Nady Maio Gomes Rêgo, 33
+                    </p>
+
+                    <p>
+                        <strong>Telefone:</strong> (82) 99999-9999
+                    </p>
+
+                    <p>
+                        <strong>PIX:</strong> chavepix@exemplo.com
+                    </p>
+                </div>
+            </div>
+
+            <div class="details-info-area">
+                <h2>@Model.Nome</h2>
+
+                <p class="details-descricao">
+                    @Model.Descricao
+                </p>
+
+                <div class="details-grid">
+
+                    <div class="details-item">
+                        <span class="details-label">Valor</span>
+                        <span class="details-value">R$ @Model.Valor</span>
+                    </div>
+
+                    <div class="details-item">
+                        <span class="details-label">Quantidade</span>
+                        <span class="details-value">@Model.Quantidade</span>
+                    </div>
+
+                    <div class="details-item">
+                        <span class="details-label">Status</span>
+                        <span class="details-value">
+                            @(Model.Doado ? "Já doado" : "Disponível")
+                        </span>
+                    </div>
+
+                    <div class="details-item">
+                        <span class="details-label">Doador</span>
+                        <span class="details-value">
+                            @(string.IsNullOrEmpty(Model.Doador)
+                                                        ? "Ainda não informado"
+                                                        : Model.Doador)
+                        </span>
+                    </div>
+
+                    <div class="details-item details-item-full">
+                        <span class="details-label">Link do Produto</span>
+                        <span class="details-value">
+                            @if (!string.IsNullOrEmpty(Model.LinkProduto))
+                            {
+                                <a href="@Model.LinkProduto" target="_blank">
+                                    Abrir link do produto
+                                </a>
+                            }
+                            else
+                            {
+                                <span>Link não informado</span>
+                            }
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        @if (!Model.Doado)
+        {
+            <div class="bloco-doacao">
+
+                <button type="button"
+                        class="toggle-doacao"
+                        onclick="alternarDoacao()">
+
+                    <span>Quero doar este item</span>
+                    <span id="icone-doacao">+</span>
+
+                </button>
+
+                <div id="painel-doacao" class="painel-doacao">
+
+                    <form asp-action="Doar"
+                          method="post"
+                          class="form-doacao">
+
+                        <input type="hidden"
+                               name="id"
+                               value="@Model.Id" />
+
+                        <div class="linha-dupla">
+
+                            <div class="grupo-form">
+                                <label for="nome">Seu nome</label>
+                                <input type="text"
+                                       name="nome"
+                                       id="nome"
+                                       class="input-form"
+                                       required />
+                            </div>
+
+                            <div class="grupo-form">
+                                <label for="telefone">Telefone</label>
+                                <input type="text"
+                                       name="telefone"
+                                       id="telefone"
+                                       class="input-form"
+                                       required />
+                            </div>
+
+                        </div>
+
+                        <div class="grupo-form">
+                            <label for="email">E-mail</label>
+                            <input type="email"
+                                   name="email"
+                                   id="email"
+                                   class="input-form" />
+                        </div>
+
+                        <div class="grupo-form">
+                            <label for="formaEntrega">
+                                Forma de entrega
+                            </label>
+
+                            <select name="formaEntrega"
+                                    id="formaEntrega"
+                                    class="input-form"
+                                    required>
+                                <option value="">Selecione</option>
+                                <option value="PIX">Enviar por PIX</option>
+                                <option value="Endereço">Comprar e enviar para o endereço</option>
+                                <option value="Em mãos">Entregar em mãos</option>
+                            </select>
+                        </div>
+
+                        <div class="acoes-formulario">
+                            <button type="submit"
+                                    class="btn-principal">
+                                Confirmar Doação
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        }
+
+        <div class="acoes-formulario">
+
+            @if (adminLogado)
+            {
+                <a asp-action="Edit"
+                   asp-route-id="@Model.Id"
+                   class="btn-principal">
+                    Editar Produto
+                </a>
+            }
+
+            <a asp-action="Index"
+               class="btn-secundario">
+                Voltar para Lista
+            </a>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function alternarDoacao() {
+        const painel = document.getElementById("painel-doacao");
+        const icone = document.getElementById("icone-doacao");
+
+        painel.classList.toggle("aberto");
+
+        icone.textContent =
+            painel.classList.contains("aberto")
+                ? "−"
+                : "+";
+    }
+</script>

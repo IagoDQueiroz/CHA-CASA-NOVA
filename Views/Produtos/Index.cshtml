@@ -1,0 +1,233 @@
+﻿@model List<CHA_CASA_NOVA_ADRIANA.Models.Produto>
+
+@{
+    ViewData["Title"] = "Lista de Presentes";
+    var adminLogado = Context.Session.GetString("AdminLogado") == "true";
+
+    var totalItens = Model?.Count ?? 0;
+    var itensDoados = Model?.Count(x => x.Doado) ?? 0;
+    var itensDisponiveis = totalItens - itensDoados;
+}
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" />
+
+<header class="hero-lista">
+
+    <div class="hero-lista-overlay"></div>
+
+    <div class="hero-lista-content">
+
+        <span class="hero-badge">
+            Chá de Casa Nova ✨
+        </span>
+
+        <h1>
+            Bem-vindos à nossa lista de presentes 🏡💖
+        </h1>
+
+        <p class="hero-descricao">
+            Preparamos esse espaço com muito carinho para compartilhar esse momento tão especial.
+            Cada presente fará parte do nosso novo lar e ficará guardado com amor em nossa história.
+        </p>
+
+        <div class="hero-mini-info">
+
+            <div class="mini-info-card">
+                <span class="mini-info-numero">@totalItens</span>
+                <span class="mini-info-texto">Itens cadastrados</span>
+            </div>
+
+            <div class="mini-info-card">
+                <span class="mini-info-numero">@itensDisponiveis</span>
+                <span class="mini-info-texto">Disponíveis</span>
+            </div>
+
+            <div class="mini-info-card">
+                <span class="mini-info-numero">@itensDoados</span>
+                <span class="mini-info-texto">Já presenteados</span>
+            </div>
+
+        </div>
+
+        @if (adminLogado)
+        {
+            <div class="hero-actions">
+                <a asp-controller="Produtos"
+                   asp-action="Create"
+                   class="btn-principal">
+                    Cadastrar Produto
+                </a>
+            </div>
+        }
+
+    </div>
+</header>
+
+<main class="pagina-lista-presentes">
+
+    <section class="secao-topo-lista">
+        <div class="secao-titulo-central">
+
+            <span class="secao-subtitulo">
+                Nossa seleção especial
+            </span>
+
+            <h2>Lista de Presentes</h2>
+
+            <p>
+                Escolha um item para presentear com carinho.
+                Cada gesto aqui significa muito para nós 💕
+            </p>
+
+        </div>
+    </section>
+
+    <section class="cards-presentes">
+
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <article class="card-presente @(item.Doado ? "card-presente-doado" : "")">
+
+                    <div class="card-presente-imagem-area">
+
+                        <img src="@item.ImagemUrl"
+                             alt="@item.Nome"
+                             class="card-presente-imagem" />
+
+                        @if (item.Doado)
+                        {
+                            <div class="status-flutuante status-doado">
+                                Presenteado
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="status-flutuante status-disponivel">
+                                Disponível
+                            </div>
+                        }
+
+                    </div>
+
+                    <div class="card-presente-conteudo">
+
+                        <h3>@item.Nome</h3>
+
+                        <p class="descricao-produto">
+                            @item.Descricao
+                        </p>
+
+                        <div class="card-presente-infos">
+
+                            <div class="info-linha">
+                                <span class="info-label">Quantidade</span>
+                                <span class="info-texto">
+                                    @item.Quantidade unidade(s)
+                                </span>
+                            </div>
+
+                        </div>
+
+                        @if (item.Doado)
+                        {
+                            <div class="box-doador text-center">
+                                Item doado
+                            </div>
+                        }
+
+                        <div class="acoes-card">
+
+                            <a asp-controller="Produtos"
+                               asp-action="Details"
+                               asp-route-id="@item.Id"
+                               class="btn-card btn-card-detalhes">
+                                Ver Detalhes
+                            </a>
+
+                            @if (adminLogado)
+                            {
+                                <a asp-controller="Produtos"
+                                   asp-action="Edit"
+                                   asp-route-id="@item.Id"
+                                   class="btn-card btn-card-admin">
+                                    Editar
+                                </a>
+
+                                <a asp-controller="Produtos"
+                                   asp-action="Delete"
+                                   asp-route-id="@item.Id"
+                                   class="btn-card btn-card-excluir">
+                                    Excluir
+                                </a>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </article>
+            }
+        }
+        else
+        {
+            <div class="estado-vazio">
+
+                <h3>Nenhum produto cadastrado ainda</h3>
+
+                <p>
+                    Em breve os presentes aparecerão aqui 💝
+                </p>
+
+                @if (adminLogado)
+                {
+                    <a asp-controller="Produtos"
+                       asp-action="Create"
+                       class="btn-principal">
+                        Cadastrar Primeiro Produto
+                    </a>
+                }
+
+            </div>
+        }
+
+    </section>
+
+</main>
+
+<footer class="footer-site">
+
+    <div class="footer-conteudo">
+
+        <div class="footer-coluna">
+            <h4>Nosso Chá de Casa Nova</h4>
+
+            <p>
+                Obrigado por fazer parte desse momento tão especial.
+            </p>
+        </div>
+
+        <div class="footer-coluna">
+            <h4>Contato</h4>
+
+            <p>WhatsApp: (82) 99999-9999</p>
+            <p>Maceió - AL</p>
+        </div>
+
+        <div class="footer-coluna">
+            <h4>Links</h4>
+
+            <a asp-controller="Login" asp-action="Index">
+                Área Administrativa
+            </a>
+        </div>
+
+    </div>
+
+    <div class="footer-copy">
+        <p><i>VIV Software  </i> Feito com amor 🏡💖</p>
+    </div>
+
+</footer>

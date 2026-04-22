@@ -1,0 +1,94 @@
+﻿@model CHA_CASA_NOVA_ADRIANA.Models.Produto
+
+@{
+    bool editando = Model != null && Model.Id > 0;
+    ViewData["Title"] = editando ? "Editar Produto" : "Cadastrar Produto";
+}
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" />
+
+<div class="pagina-formulario">
+    <div class="form-container">
+        <div class="topo-formulario">
+            <h1>@(editando ? "Editar Produto" : "Cadastrar Produto")</h1>
+            <p>
+                @(editando
+                    ? "Atualize as informações do item da lista ✨"
+                    : "Adicione um novo item à lista do chá de casa nova ✨")
+            </p>
+        </div>
+
+        <form asp-action="@(editando ? "Edit" : "Create")" method="post" class="formulario-produto">
+            @if (editando)
+            {
+                <input type="hidden" asp-for="Id" />
+            }
+
+            <div asp-validation-summary="ModelOnly" class="mensagem-erro"></div>
+
+            <div class="grupo-form">
+                <label asp-for="Nome"></label>
+                <input asp-for="Nome" class="input-form" placeholder="Ex: Air Fryer" />
+                <span asp-validation-for="Nome" class="texto-validacao"></span>
+            </div>
+
+            <div class="grupo-form">
+                <label asp-for="Descricao"></label>
+                <textarea asp-for="Descricao" class="input-form textarea-form" placeholder="Descreva o produto"></textarea>
+                <span asp-validation-for="Descricao" class="texto-validacao"></span>
+            </div>
+
+            <div class="linha-dupla">
+                <div class="grupo-form">
+                    <label asp-for="Valor"></label>
+                    <input asp-for="Valor" class="input-form" placeholder="Ex: 199,90" />
+                    <span asp-validation-for="Valor" class="texto-validacao"></span>
+                </div>
+
+                <div class="grupo-form">
+                    <label asp-for="Quantidade"></label>
+                    <input asp-for="Quantidade" class="input-form" placeholder="Ex: 1" />
+                    <span asp-validation-for="Quantidade" class="texto-validacao"></span>
+                </div>
+            </div>
+
+            <div class="grupo-form">
+                <label asp-for="LinkProduto"></label>
+                <input asp-for="LinkProduto" class="input-form" />
+                <span asp-validation-for="LinkProduto" class="texto-validacao"></span>
+            </div>
+
+            <div class="grupo-form">
+                <label asp-for="ImagemUrl"></label>
+                <input asp-for="ImagemUrl" class="input-form" placeholder="Cole a URL da imagem" />
+                <span asp-validation-for="ImagemUrl" class="texto-validacao"></span>
+            </div>
+
+            <div class="grupo-form">
+                <label asp-for="Doador"></label>
+                <input asp-for="Doador" class="input-form" placeholder="Informe o nome do doador, se houver" />
+                <span asp-validation-for="Doador" class="texto-validacao"></span>
+            </div>
+
+            <div class="grupo-checkbox">
+                <input asp-for="Doado" />
+                <label asp-for="Doado">Produto já foi doado</label>
+            </div>
+
+            <div class="acoes-formulario">
+                <button type="submit" class="btn-principal">
+                    @(editando ? "Salvar Alterações" : "Salvar Produto")
+                </button>
+
+                <a asp-action="Index" class="btn-secundario">Voltar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

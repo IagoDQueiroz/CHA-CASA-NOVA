@@ -1,0 +1,56 @@
+﻿@model CHA_CASA_NOVA_ADRIANA.Models.Produto
+
+@{
+    ViewData["Title"] = "Excluir Produto";
+}
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" />
+
+<div class="pagina-formulario">
+    <div class="form-container">
+
+        <div class="topo-formulario">
+            <h1>Excluir Produto</h1>
+            <p>Tem certeza que deseja remover este item da lista?</p>
+        </div>
+
+        <div class="card-preview-delete">
+            <img src="@Model.ImagemUrl" alt="@Model.Nome" class="imagem-preview-delete" />
+
+            <div class="preview-delete-info">
+                <h3>@Model.Nome</h3>
+                <p>@Model.Descricao</p>
+                <p><strong>Valor:</strong> R$ @Model.Valor</p>
+                <p><strong>Quantidade:</strong> @Model.Quantidade</p>
+
+                @if (Model.Doado)
+                {
+                    <p><strong>Status:</strong> Já doado</p>
+                }
+                else
+                {
+                    <p><strong>Status:</strong> Disponível</p>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.Doador))
+                {
+                    <p><strong>Doador:</strong> @Model.Doador</p>
+                }
+            </div>
+        </div>
+
+        <form asp-action="Delete" method="post" class="acoes-formulario">
+            <input type="hidden" asp-for="Id" />
+
+            <button type="submit" class="btn-excluir">
+                Confirmar Exclusão
+            </button>
+
+            <a asp-action="Index" class="btn-secundario">
+                Cancelar
+            </a>
+        </form>
+
+    </div>
+</div>

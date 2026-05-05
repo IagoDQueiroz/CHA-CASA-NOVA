@@ -16,19 +16,6 @@
             </p>
         </div>
 
-        @if (TempData["Mensagem"] != null)
-        {
-            <div class="alert alert-success">
-                @TempData["Mensagem"]
-            </div>
-        }
-
-        @if (ViewBag.Message != null)
-        {
-            <div class="alert alert-danger">
-                @ViewBag.Message
-            </div>
-        }
 
         <form asp-action="Index" method="post" class="formulario-login">
 
@@ -42,6 +29,23 @@
                        required />
             </div>
 
+            <a asp-action="EnviarCodigo" asp-controller="Login">Enviar código por email</a>
+
+            @if (ViewBag.Message != null)
+            {
+                <div class="alert alert-danger">
+                    @ViewBag.Message
+                </div>
+            }
+
+            @if (TempData["Mensagem"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["Mensagem"]
+                </div>
+            }
+
+
             <div class="acoes-formulario">
                 <button type="submit" class="btn-principal">
                     Entrar
@@ -49,12 +53,5 @@
             </div>
 
         </form>
-
-        <form asp-action="EnviarCodigo" method="post" class="form-reenviar-codigo">
-            <button type="submit" class="link-enviar-codigo">
-                Enviar código por email.
-            </button>
-        </form>
-
     </div>
 </div>

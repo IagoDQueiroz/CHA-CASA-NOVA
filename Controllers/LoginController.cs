@@ -12,7 +12,6 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
             return View();
         }
 
-        [HttpPost]
         public IActionResult EnviarCodigo()
         {
             int codigo = new Random().Next(1000, 9999);
@@ -20,14 +19,14 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
             HttpContext.Session.SetInt32("CodigoAdmin", codigo);
 
             MailMessage email = new MailMessage();
-            email.From = new MailAddress("seuemail@gmail.com");
-            email.To.Add("emailfixo@gmail.com");
+            email.From = new MailAddress("todinhovencido7@gmail.com");
+            email.To.Add("Popyluzer@outlook.com");
             email.Subject = "Código de acesso administrador";
             email.Body = $"Seu código de acesso é: {codigo}";
             email.IsBodyHtml = false;
 
             SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-            smtp.Credentials = new NetworkCredential("seuemail@gmail.com", "SUA_SENHA_DE_APP");
+            smtp.Credentials = new NetworkCredential("todinhovencido7@gmail.com", "zwxl rcuq cnge ybna");
             smtp.EnableSsl = true;
 
             smtp.Send(email);

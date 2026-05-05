@@ -35,7 +35,7 @@
 
             <div class="mini-info-card">
                 <span class="mini-info-numero">@totalItens</span>
-                <span class="mini-info-texto">Itens cadastrados</span>
+                <span class="mini-info-texto">Total de Produtos</span>
             </div>
 
             <div class="mini-info-card">
@@ -218,10 +218,16 @@
 
         <div class="footer-coluna">
             <h4>Links</h4>
-
-            <a asp-controller="Login" asp-action="Index">
-                Área Administrativa
-            </a>
+            @if (adminLogado)
+            {
+                <a asp-action="Logout" asp-controller="Login">Sair do modo administrador</a>
+            }
+            else
+            {
+                <a asp-controller="Login" asp-action="Index">
+                    Área Administrativa
+                </a>
+            }
         </div>
 
     </div>
@@ -229,5 +235,4 @@
     <div class="footer-copy">
         <p><i>VIV Software  </i> Feito com amor 🏡💖</p>
     </div>
-
 </footer>

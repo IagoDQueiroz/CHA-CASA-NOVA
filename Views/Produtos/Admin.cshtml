@@ -1,0 +1,79 @@
+@model List<CHA_CASA_NOVA_ADRIANA.Models.Produto>
+
+@{
+    ViewData["Title"] = "Painel Admin";
+    var cultura = System.Globalization.CultureInfo.GetCultureInfo("pt-BR");
+}
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" />
+
+<main class="pagina-lista-presentes">
+    <section class="admin-painel">
+        <div class="admin-painel-topo">
+            <div>
+                <span class="secao-subtitulo">Administração</span>
+                <h1>Painel da Lista</h1>
+            </div>
+
+            <div class="acoes-formulario">
+                <a asp-action="Create" class="btn-principal">Cadastrar Produto</a>
+                <a asp-action="Index" class="btn-secundario">Ver Home</a>
+            </div>
+        </div>
+
+        <div class="admin-resumo">
+            <div class="mini-info-card">
+                <span class="mini-info-numero">@ViewBag.Total</span>
+                <span class="mini-info-texto">Total</span>
+            </div>
+
+            <div class="mini-info-card">
+                <span class="mini-info-numero">@ViewBag.Disponiveis</span>
+                <span class="mini-info-texto">Disponíveis</span>
+            </div>
+
+            <div class="mini-info-card">
+                <span class="mini-info-numero">@ViewBag.Doados</span>
+                <span class="mini-info-texto">Doados</span>
+            </div>
+
+            <div class="mini-info-card">
+                <span class="mini-info-numero">@(((decimal)ViewBag.ValorTotal).ToString("C", cultura))</span>
+                <span class="mini-info-texto">Valor total</span>
+            </div>
+        </div>
+
+        <div class="admin-tabela-wrap">
+            <table class="admin-tabela">
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Categoria</th>
+                        <th>Valor</th>
+                        <th>Status</th>
+                        <th>Doador</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var produto in Model)
+                    {
+                        <tr>
+                            <td>@produto.Nome</td>
+                            <td>@(produto.Categoria ?? "-")</td>
+                            <td>@produto.Valor.ToString("C", cultura)</td>
+                            <td>@(produto.Doado ? "Doado" : "Disponível")</td>
+                            <td>@(produto.Doador ?? "-")</td>
+                            <td class="admin-acoes">
+                                <a asp-action="Details" asp-route-id="@produto.Id">Detalhes</a>
+                                <a asp-action="Edit" asp-route-id="@produto.Id">Editar</a>
+                                <a asp-action="Delete" asp-route-id="@produto.Id">Excluir</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>

@@ -3,6 +3,12 @@
 @{
     ViewData["Title"] = "Lista de Presentes";
     var adminLogado = Context.Session.GetString("AdminLogado") == "true";
+    var cultura = System.Globalization.CultureInfo.GetCultureInfo("pt-BR");
+    var busca = ViewBag.Busca as string;
+    var status = ViewBag.Status as string;
+    var categoria = ViewBag.Categoria as string;
+    var valorMaximo = ViewBag.ValorMaximo as decimal?;
+    var categorias = ViewBag.Categorias as List<string> ?? new List<string>();
 
     var totalItens = Model?.Count ?? 0;
     var itensDoados = Model?.Count(x => x.Doado) ?? 0;
@@ -15,6 +21,31 @@
 <header class="hero-lista">
 
     <div class="hero-lista-overlay"></div>
+
+    <div class="admin-home-area">
+        @if (adminLogado)
+        {
+            <a asp-controller="Produtos"
+               asp-action="Admin"
+               class="admin-home-link">
+                Painel Admin
+            </a>
+
+            <a asp-action="Logout"
+               asp-controller="Login"
+               class="admin-home-link admin-home-link-outline">
+                Sair
+            </a>
+        }
+        else
+        {
+            <a asp-controller="Login"
+               asp-action="Index"
+               class="admin-home-link">
+                Área Administrativa
+            </a>
+        }
+    </div>
 
     <div class="hero-lista-content">
 
@@ -50,17 +81,6 @@
 
         </div>
 
-        @if (adminLogado)
-        {
-            <div class="hero-actions">
-                <a asp-controller="Produtos"
-                   asp-action="Create"
-                   class="btn-principal">
-                    Cadastrar Produto
-                </a>
-            </div>
-        }
-
     </div>
 </header>
 
@@ -81,6 +101,46 @@
             </p>
 
         </div>
+
+        <form asp-action="Index" method="get" class="filtros-lista">
+            <input type="text"
+                   name="busca"
+                   value="@busca"
+                   class="input-form"
+                   placeholder="Buscar produto" />
+
+            <select name="status" class="input-form">
+                <option value="">Todos</option>
+                <option value="disponiveis" selected="@(status == "disponiveis")">Disponíveis</option>
+                <option value="doados" selected="@(status == "doados")">Já doados</option>
+            </select>
+
+            <select name="categoria" class="input-form">
+                <option value="">Categorias</option>
+                @foreach (var itemCategoria in categorias)
+                {
+                    <option value="@itemCategoria" selected="@(categoria == itemCategoria)">
+                        @itemCategoria
+                    </option>
+                }
+            </select>
+
+            <input type="number"
+                   name="valorMaximo"
+                   value="@valorMaximo"
+                   class="input-form"
+                   min="1"
+                   step="0.01"
+                   placeholder="Valor até" />
+
+            <button type="submit" class="btn-principal">
+                Filtrar
+            </button>
+
+            <a asp-action="Index" class="btn-secundario">
+                Limpar
+            </a>
+        </form>
     </section>
 
     <section class="cards-presentes">
@@ -123,11 +183,26 @@
                         <div class="card-presente-infos">
 
                             <div class="info-linha">
+                                <span class="info-label">Valor</span>
+                                <span class="info-valor">
+                                    @item.Valor.ToString("C", cultura)
+                                </span>
+                            </div>
+
+                            <div class="info-linha">
                                 <span class="info-label">Quantidade</span>
                                 <span class="info-texto">
                                     @item.Quantidade unidade(s)
                                 </span>
                             </div>
+
+                            @if (!string.IsNullOrWhiteSpace(item.Categoria))
+                            {
+                                <div class="info-linha">
+                                    <span class="info-label">Categoria</span>
+                                    <span class="info-texto">@item.Categoria</span>
+                                </div>
+                            }
 
                         </div>
 
@@ -146,6 +221,17 @@
                                class="btn-card btn-card-detalhes">
                                 Ver Detalhes
                             </a>
+
+                            @if (!item.Doado)
+                            {
+                                <a asp-controller="Produtos"
+                                   asp-action="Details"
+                                   asp-route-id="@item.Id"
+                                   asp-fragment="doacao"
+                                   class="btn-card btn-card-doar">
+                                    Quero Doar
+                                </a>
+                            }
 
                             @if (adminLogado)
                             {
@@ -214,20 +300,6 @@
 
             <p>WhatsApp: (82) 99999-9999</p>
             <p>Maceió - AL</p>
-        </div>
-
-        <div class="footer-coluna">
-            <h4>Links</h4>
-            @if (adminLogado)
-            {
-                <a asp-action="Logout" asp-controller="Login">Sair do modo administrador</a>
-            }
-            else
-            {
-                <a asp-controller="Login" asp-action="Index">
-                    Área Administrativa
-                </a>
-            }
         </div>
 
     </div>

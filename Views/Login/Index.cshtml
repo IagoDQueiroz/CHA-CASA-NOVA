@@ -9,27 +9,16 @@
 <div class="pagina-login">
     <div class="login-box">
 
-        <div class="topo-formulario">
-            <h1>Acesso Administrador</h1>
+        <div class="login-brand">
+            <span class="login-badge">Chá de Casa Nova</span>
+            <h1>Área Administrativa</h1>
             <p>
-                Entre com o código de acesso enviado por e-mail para administrar a lista de presentes.
+                Envie o código para o e-mail cadastrado e informe abaixo para gerenciar a lista.
             </p>
         </div>
 
 
         <form asp-action="Index" method="post" class="formulario-login">
-
-            <div class="grupo-form">
-                <label for="codigo">Código</label>
-                <input type="number"
-                       name="codigo"
-                       id="codigo"
-                       class="input-form"
-                       placeholder="Digite o código recebido"
-                       required />
-            </div>
-
-            <a asp-action="EnviarCodigo" asp-controller="Login">Enviar código por email</a>
 
             @if (ViewBag.Message != null)
             {
@@ -45,12 +34,44 @@
                 </div>
             }
 
+            @if (TempData["MensagemErro"] != null)
+            {
+                <div class="alert alert-danger">
+                    @TempData["MensagemErro"]
+                </div>
+            }
 
-            <div class="acoes-formulario">
+            <div class="login-codigo-box">
+                <div class="grupo-form">
+                    <label for="codigo">Código de acesso</label>
+                    <input type="number"
+                           name="codigo"
+                           id="codigo"
+                           class="input-form input-codigo"
+                           placeholder="0000"
+                           required />
+                </div>
+            </div>
+
+            <div class="acoes-login">
+                <button type="submit"
+                        asp-action="EnviarCodigo"
+                        asp-controller="Login"
+                        formnovalidate
+                        class="btn-secundario">
+                    Enviar código
+                </button>
+
                 <button type="submit" class="btn-principal">
                     Entrar
                 </button>
             </div>
+
+            <a asp-controller="Produtos"
+               asp-action="Index"
+               class="login-voltar">
+                Voltar para lista
+            </a>
 
         </form>
     </div>

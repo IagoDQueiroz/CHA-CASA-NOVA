@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CHA_CASA_NOVA_ADRIANA.Data;
+using CHA_CASA_NOVA_ADRIANA.Filters;
 using CHA_CASA_NOVA_ADRIANA.Models;
+using System.Net.Mail;
 
 namespace CHA_CASA_NOVA_ADRIANA.Controllers
 {
@@ -18,15 +16,70 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
             _context = context;
         }
 
-        private bool AdminEstaLogado()
+        [HttpGet]
+        public IActionResult Index(string? busca, string? status, string? categoria, decimal? valorMaximo)
         {
-            return HttpContext.Session.GetString("AdminLogado") == "true";
+            var produtosQuery = _context.Produto.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(busca))
+            {
+                produtosQuery = produtosQuery.Where(p =>
+                    p.Nome.Contains(busca) ||
+                    p.Descricao.Contains(busca));
+            }
+
+            if (!string.IsNullOrWhiteSpace(categoria))
+            {
+                produtosQuery = produtosQuery.Where(p => p.Categoria == categoria);
+            }
+
+            if (valorMaximo.HasValue)
+            {
+                produtosQuery = produtosQuery.Where(p => p.Valor <= valorMaximo.Value);
+            }
+
+            if (status == "disponiveis")
+            {
+                produtosQuery = produtosQuery.Where(p => !p.Doado);
+            }
+            else if (status == "doados")
+            {
+                produtosQuery = produtosQuery.Where(p => p.Doado);
+            }
+
+            ViewBag.Busca = busca;
+            ViewBag.Status = status;
+            ViewBag.Categoria = categoria;
+            ViewBag.ValorMaximo = valorMaximo;
+            ViewBag.Categorias = _context.Produto
+                .Where(p => !string.IsNullOrWhiteSpace(p.Categoria))
+                .Select(p => p.Categoria!)
+                .Distinct()
+                .OrderBy(c => c)
+                .ToList();
+
+            var produtos = produtosQuery
+                .OrderBy(p => p.Doado)
+                .ThenBy(p => p.Nome)
+                .ToList();
+
+            return View(produtos);
         }
 
         [HttpGet]
-        public IActionResult Index()
+        [AdminRequired]
+        public IActionResult Admin()
         {
-            var produtos = _context.Produto.ToList();
+            var produtos = _context.Produto
+                .OrderBy(p => p.Doado)
+                .ThenBy(p => p.Nome)
+                .ToList();
+
+            ViewBag.Total = produtos.Count;
+            ViewBag.Doados = produtos.Count(p => p.Doado);
+            ViewBag.Disponiveis = produtos.Count(p => !p.Doado);
+            ViewBag.ValorTotal = produtos.Sum(p => p.Valor);
+
             return View(produtos);
         }
 
@@ -50,25 +103,17 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
         }
 
         [HttpGet]
+        [AdminRequired]
         public IActionResult Create()
         {
-            if (!AdminEstaLogado())
-            {
-                return RedirectToAction("Index", "Login");
-            }
-
             return View(new Produto());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdminRequired]
         public IActionResult Create(Produto produto)
         {
-            if (!AdminEstaLogado())
-            {
-                return RedirectToAction("Index", "Login");
-            }
-
             if (ModelState.IsValid)
             {
                 _context.Add(produto);
@@ -81,13 +126,9 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
         }
 
         [HttpGet]
+        [AdminRequired]
         public IActionResult Edit(int? id)
         {
-            if (!AdminEstaLogado())
-            {
-                return RedirectToAction("Index", "Login");
-            }
-
             if (id == null)
             {
                 return NotFound();
@@ -105,13 +146,9 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdminRequired]
         public IActionResult Edit(Produto produto)
         {
-            if (!AdminEstaLogado())
-            {
-                return RedirectToAction("Index", "Login");
-            }
-
             if (ModelState.IsValid)
             {
                 try
@@ -125,10 +162,8 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+
+                    throw;
                 }
 
                 return RedirectToAction(nameof(Index));
@@ -138,13 +173,9 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
         }
 
         [HttpGet]
+        [AdminRequired]
         public IActionResult Delete(int? id)
         {
-            if (!AdminEstaLogado())
-            {
-                return RedirectToAction("Index", "Login");
-            }
-
             if (id == null)
             {
                 return NotFound();
@@ -162,13 +193,9 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdminRequired]
         public IActionResult Delete(int id)
         {
-            if (!AdminEstaLogado())
-            {
-                return RedirectToAction("Index", "Login");
-            }
-
             var produto = _context.Produto.Find(id);
 
             if (produto != null)
@@ -178,11 +205,6 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
             }
 
             return RedirectToAction("Index");
-        }
-
-        private bool ProdutoExists(int id)
-        {
-            return _context.Produto.Any(e => e.Id == id);
         }
 
         [HttpPost]
@@ -202,6 +224,31 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
                 return RedirectToAction("Details", new { id });
             }
 
+            nome = nome.Trim();
+            telefone = telefone.Trim();
+            email = email?.Trim();
+            formaEntrega = formaEntrega.Trim();
+
+            if (string.IsNullOrWhiteSpace(nome) ||
+                string.IsNullOrWhiteSpace(telefone) ||
+                string.IsNullOrWhiteSpace(formaEntrega))
+            {
+                TempData["MensagemErro"] = "Preencha nome, telefone e forma de entrega.";
+                return RedirectToAction("Details", new { id });
+            }
+
+            if (telefone.Length < 10)
+            {
+                TempData["MensagemErro"] = "Informe um telefone válido.";
+                return RedirectToAction("Details", new { id });
+            }
+
+            if (!string.IsNullOrWhiteSpace(email) && !EmailValido(email))
+            {
+                TempData["MensagemErro"] = "Informe um e-mail válido.";
+                return RedirectToAction("Details", new { id });
+            }
+
             produto.Doado = true;
             produto.Doador = nome;
             produto.TelefoneDoador = telefone;
@@ -212,7 +259,63 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
             _context.SaveChanges();
 
             TempData["MensagemSucesso"] = "Doação registrada com sucesso!";
+            return RedirectToAction("Obrigado", new { id });
+        }
+
+        [HttpGet]
+        public IActionResult Obrigado(int id)
+        {
+            var produto = _context.Produto.Find(id);
+
+            if (produto == null)
+            {
+                return NotFound();
+            }
+
+            return View(produto);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AdminRequired]
+        public IActionResult DesfazerDoacao(int id)
+        {
+            var produto = _context.Produto.Find(id);
+
+            if (produto == null)
+            {
+                return NotFound();
+            }
+
+            produto.Doado = false;
+            produto.Doador = null;
+            produto.TelefoneDoador = null;
+            produto.EmailDoador = null;
+            produto.FormaEntrega = null;
+
+            _context.Produto.Update(produto);
+            _context.SaveChanges();
+
+            TempData["MensagemSucesso"] = "Doação desfeita com sucesso.";
             return RedirectToAction("Details", new { id });
+        }
+
+        private bool ProdutoExists(int id)
+        {
+            return _context.Produto.Any(e => e.Id == id);
+        }
+
+        private static bool EmailValido(string email)
+        {
+            try
+            {
+                _ = new MailAddress(email);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

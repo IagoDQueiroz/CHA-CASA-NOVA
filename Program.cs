@@ -11,6 +11,7 @@ builder.Services.AddDbContext<CHA_CASA_NOVA_ADRIANAContext>(options =>
 
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -19,6 +20,16 @@ builder.Services.AddSession(options =>
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<CHA_CASA_NOVA_ADRIANAContext>();
+    context.Database.Migrate();
+    context.Database.ExecuteSqlRaw("""
+        ALTER TABLE "Produto"
+        ADD COLUMN IF NOT EXISTS "Categoria" character varying(50);
+        """);
+}
 
 if (!app.Environment.IsDevelopment())
 {

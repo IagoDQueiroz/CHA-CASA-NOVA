@@ -1,0 +1,33 @@
+@model CHA_CASA_NOVA_ADRIANA.Models.Produto
+
+@{
+    ViewData["Title"] = "Obrigado";
+}
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" />
+
+<div class="pagina-formulario">
+    <div class="form-container obrigado-container">
+        <div class="topo-formulario">
+            <span class="login-badge">Doação confirmada</span>
+            <h1>Obrigado pelo presente!</h1>
+            <p>
+                Sua doação para <strong>@Model.Nome</strong> foi registrada com sucesso.
+            </p>
+        </div>
+
+        <div class="obrigado-card">
+            <img src="@Model.ImagemUrl" alt="@Model.Nome" />
+            <div>
+                <h2>@Model.Nome</h2>
+                <p>@Model.Descricao</p>
+            </div>
+        </div>
+
+        <div class="acoes-formulario">
+            <a asp-action="Index" class="btn-principal">Voltar para lista</a>
+            <a asp-action="Details" asp-route-id="@Model.Id" class="btn-secundario">Ver detalhes</a>
+        </div>
+    </div>
+</div>

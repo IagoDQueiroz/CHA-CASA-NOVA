@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Detalhes do Produto";
     var adminLogado = Context.Session.GetString("AdminLogado") == "true";
+    var cultura = System.Globalization.CultureInfo.GetCultureInfo("pt-BR");
 }
 
 <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -91,7 +92,7 @@
 
                     <div class="details-item">
                         <span class="details-label">Valor</span>
-                        <span class="details-value">R$ @Model.Valor</span>
+                        <span class="details-value">@Model.Valor.ToString("C", cultura)</span>
                     </div>
 
                     <div class="details-item">
@@ -106,14 +107,25 @@
                         </span>
                     </div>
 
-                    <div class="details-item">
-                        <span class="details-label">Doador</span>
-                        <span class="details-value">
-                            @(string.IsNullOrEmpty(Model.Doador)
-                                                        ? "Ainda não informado"
-                                                        : Model.Doador)
-                        </span>
-                    </div>
+                    @if (!string.IsNullOrWhiteSpace(Model.Categoria))
+                    {
+                        <div class="details-item">
+                            <span class="details-label">Categoria</span>
+                            <span class="details-value">@Model.Categoria</span>
+                        </div>
+                    }
+
+                    @if (adminLogado)
+                    {
+                        <div class="details-item">
+                            <span class="details-label">Doador</span>
+                            <span class="details-value">
+                                @(string.IsNullOrEmpty(Model.Doador)
+                                                            ? "Ainda não informado"
+                                                            : Model.Doador)
+                            </span>
+                        </div>
+                    }
 
                     <div class="details-item details-item-full">
                         <span class="details-label">Link do Produto</span>
@@ -138,7 +150,7 @@
 
         @if (!Model.Doado)
         {
-            <div class="bloco-doacao">
+            <div class="bloco-doacao" id="doacao">
 
                 <button type="button"
                         class="toggle-doacao"
@@ -153,7 +165,8 @@
 
                     <form asp-action="Doar"
                           method="post"
-                          class="form-doacao">
+                          class="form-doacao"
+                          onsubmit="return confirm('Confirmar doação deste item?');">
 
                         <input type="hidden"
                                name="id"
@@ -176,6 +189,8 @@
                                        name="telefone"
                                        id="telefone"
                                        class="input-form"
+                                       maxlength="20"
+                                       placeholder="(82) 99999-9999"
                                        required />
                             </div>
 
@@ -186,6 +201,7 @@
                             <input type="email"
                                    name="email"
                                    id="email"
+                                   maxlength="150"
                                    class="input-form" />
                         </div>
 
@@ -227,6 +243,18 @@
                    class="btn-principal">
                     Editar Produto
                 </a>
+
+                @if (Model.Doado)
+                {
+                    <form asp-action="DesfazerDoacao"
+                          method="post"
+                          onsubmit="return confirm('Desfazer esta doação?');">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" class="btn-secundario">
+                            Desfazer Doação
+                        </button>
+                    </form>
+                }
             }
 
             <a asp-action="Index"
@@ -250,5 +278,10 @@
             painel.classList.contains("aberto")
                 ? "−"
                 : "+";
+    }
+
+    if (window.location.hash === "#doacao") {
+        alternarDoacao();
+        document.getElementById("doacao")?.scrollIntoView({ behavior: "smooth" });
     }
 </script>

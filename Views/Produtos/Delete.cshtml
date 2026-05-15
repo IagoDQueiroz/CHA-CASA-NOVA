@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Excluir Produto";
+    var cultura = System.Globalization.CultureInfo.GetCultureInfo("pt-BR");
 }
 
 <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -21,7 +22,7 @@
             <div class="preview-delete-info">
                 <h3>@Model.Nome</h3>
                 <p>@Model.Descricao</p>
-                <p><strong>Valor:</strong> R$ @Model.Valor</p>
+                <p><strong>Valor:</strong> @Model.Valor.ToString("C", cultura)</p>
                 <p><strong>Quantidade:</strong> @Model.Quantidade</p>
 
                 @if (Model.Doado)

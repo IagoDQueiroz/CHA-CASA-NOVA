@@ -23,6 +23,9 @@
             @if (editando)
             {
                 <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="TelefoneDoador" />
+                <input type="hidden" asp-for="EmailDoador" />
+                <input type="hidden" asp-for="FormaEntrega" />
             }
 
             <div asp-validation-summary="ModelOnly" class="mensagem-erro"></div>
@@ -54,6 +57,12 @@
             </div>
 
             <div class="grupo-form">
+                <label asp-for="Categoria"></label>
+                <input asp-for="Categoria" class="input-form" placeholder="Ex: Cozinha, Quarto, Banheiro" />
+                <span asp-validation-for="Categoria" class="texto-validacao"></span>
+            </div>
+
+            <div class="grupo-form">
                 <label asp-for="LinkProduto"></label>
                 <input asp-for="LinkProduto" class="input-form" />
                 <span asp-validation-for="LinkProduto" class="texto-validacao"></span>
@@ -61,8 +70,17 @@
 
             <div class="grupo-form">
                 <label asp-for="ImagemUrl"></label>
-                <input asp-for="ImagemUrl" class="input-form" placeholder="Cole a URL da imagem" />
+                <input asp-for="ImagemUrl"
+                       class="input-form"
+                       placeholder="Cole a URL da imagem"
+                       oninput="atualizarPreviewImagem()" />
                 <span asp-validation-for="ImagemUrl" class="texto-validacao"></span>
+            </div>
+
+            <div class="preview-imagem-produto">
+                <img id="previewImagemProduto"
+                     src="@Model?.ImagemUrl"
+                     alt="Preview da imagem" />
             </div>
 
             <div class="grupo-form">
@@ -92,3 +110,12 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+<script>
+    function atualizarPreviewImagem() {
+        const input = document.getElementById("ImagemUrl");
+        const preview = document.getElementById("previewImagemProduto");
+
+        preview.src = input.value;
+    }
+</script>

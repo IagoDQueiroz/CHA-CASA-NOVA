@@ -29,6 +29,10 @@ namespace CHA_CASA_NOVA_ADRIANA.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Categoria")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasMaxLength(500)

@@ -19,8 +19,12 @@ namespace CHA_CASA_NOVA_ADRIANA.Models
         public decimal Valor { get; set; }
 
         [Display(Name = "URL da Imagem")]
+        [Url(ErrorMessage = "Informe uma URL de imagem válida.")]
         [StringLength(500)]
         public string? ImagemUrl { get; set; }
+
+        [StringLength(50)]
+        public string? Categoria { get; set; }
 
         public bool Doado { get; set; } = false;
 
@@ -38,6 +42,7 @@ namespace CHA_CASA_NOVA_ADRIANA.Models
         public int Quantidade { get; set; } = 1;
 
         [Display(Name = "Link do Produto")]
+        [Url(ErrorMessage = "Informe um link válido.")]
         [StringLength(500)]
         public string? LinkProduto { get; set; }
 

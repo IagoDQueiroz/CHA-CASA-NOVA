@@ -7,6 +7,8 @@
 }
 
 <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="icon" type="image/png" href="~/favicon.png" />
+<link rel="apple-touch-icon" href="~/favicon.png" />
 <link rel="stylesheet" href="~/css/site.css" />
 
 <style>
@@ -44,7 +46,7 @@
 
         <div class="topo-formulario">
             <h1>Detalhes do Produto</h1>
-            <p>Visualize as informações completas deste item da lista</p>
+            <p>Confira as informações do item selecionado.</p>
         </div>
 
         @if (TempData["MensagemSucesso"] != null)
@@ -72,11 +74,11 @@
                     </p>
 
                     <p>
-                        <strong>Telefone:</strong> (82) 99999-9999
+                        <strong>Contato:</strong> 82 99322-4753
                     </p>
 
                     <p>
-                        <strong>PIX:</strong> chavepix@exemplo.com
+                        <strong>E-mail:</strong> iagofilipe21y@outlook.com
                     </p>
                 </div>
             </div>
@@ -132,7 +134,7 @@
                         <span class="details-value">
                             @if (!string.IsNullOrEmpty(Model.LinkProduto))
                             {
-                                <a href="@Model.LinkProduto" target="_blank">
+                                <a href="@Model.LinkProduto" target="_blank" rel="noopener noreferrer">
                                     Abrir link do produto
                                 </a>
                             }
@@ -190,7 +192,7 @@
                                        id="telefone"
                                        class="input-form"
                                        maxlength="20"
-                                       placeholder="(82) 99999-9999"
+                                       placeholder="82 99322-4753"
                                        required />
                             </div>
 
@@ -266,6 +268,8 @@
 
     </div>
 </div>
+
+@await Html.PartialAsync("_SiteFooter")
 
 <script>
     function alternarDoacao() {

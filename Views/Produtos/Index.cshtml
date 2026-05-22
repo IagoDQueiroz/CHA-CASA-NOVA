@@ -16,6 +16,8 @@
 }
 
 <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="icon" type="image/png" href="~/favicon.png" />
+<link rel="apple-touch-icon" href="~/favicon.png" />
 <link rel="stylesheet" href="~/css/site.css" />
 
 <header class="hero-lista">
@@ -50,16 +52,16 @@
     <div class="hero-lista-content">
 
         <span class="hero-badge">
-            Chá de Casa Nova ✨
+            Lista de presentes
         </span>
 
         <h1>
-            Bem-vindos à nossa lista de presentes 🏡💖
+            Chá de Casa Nova
         </h1>
 
         <p class="hero-descricao">
-            Preparamos esse espaço com muito carinho para compartilhar esse momento tão especial.
-            Cada presente fará parte do nosso novo lar e ficará guardado com amor em nossa história.
+            Escolha um item da lista e registre sua contribuição de forma simples.
+            Cada presente ajuda a compor essa nova etapa com cuidado e presença.
         </p>
 
         <div class="hero-mini-info">
@@ -90,14 +92,13 @@
         <div class="secao-titulo-central">
 
             <span class="secao-subtitulo">
-                Nossa seleção especial
+                Itens selecionados
             </span>
 
             <h2>Lista de Presentes</h2>
 
             <p>
-                Escolha um item para presentear com carinho.
-                Cada gesto aqui significa muito para nós 💕
+                Consulte os produtos disponíveis e escolha como deseja contribuir.
             </p>
 
         </div>
@@ -264,7 +265,7 @@
                 <h3>Nenhum produto cadastrado ainda</h3>
 
                 <p>
-                    Em breve os presentes aparecerão aqui 💝
+                    Em breve os presentes aparecerão aqui.
                 </p>
 
                 @if (adminLogado)
@@ -283,28 +284,4 @@
 
 </main>
 
-<footer class="footer-site">
-
-    <div class="footer-conteudo">
-
-        <div class="footer-coluna">
-            <h4>Nosso Chá de Casa Nova</h4>
-
-            <p>
-                Obrigado por fazer parte desse momento tão especial.
-            </p>
-        </div>
-
-        <div class="footer-coluna">
-            <h4>Contato</h4>
-
-            <p>WhatsApp: (82) 99999-9999</p>
-            <p>Maceió - AL</p>
-        </div>
-
-    </div>
-
-    <div class="footer-copy">
-        <p><i>VIV Software  </i> Feito com amor 🏡💖</p>
-    </div>
-</footer>
+@await Html.PartialAsync("_SiteFooter")

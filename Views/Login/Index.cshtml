@@ -4,16 +4,18 @@
 }
 
 <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="icon" type="image/png" href="~/favicon.png" />
+<link rel="apple-touch-icon" href="~/favicon.png" />
 <link rel="stylesheet" href="~/css/site.css" />
 
 <div class="pagina-login">
     <div class="login-box">
 
         <div class="login-brand">
-            <span class="login-badge">Chá de Casa Nova</span>
+            <span class="login-badge">WithCode</span>
             <h1>Área Administrativa</h1>
             <p>
-                Envie o código para o e-mail cadastrado e informe abaixo para gerenciar a lista.
+                Solicite o código de acesso e informe abaixo para gerenciar a lista.
             </p>
         </div>
 
@@ -76,3 +78,5 @@
         </form>
     </div>
 </div>
+
+@await Html.PartialAsync("_SiteFooter")

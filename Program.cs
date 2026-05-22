@@ -4,10 +4,12 @@ using CHA_CASA_NOVA_ADRIANA.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<CHA_CASA_NOVA_ADRIANAContext>(options =>
-    options.UseNpgsql(
-        builder.Configuration.GetConnectionString("CHA_CASA_NOVA_ADRIANAContext")
-        ?? throw new InvalidOperationException("Connection string 'CHA_CASA_NOVA_ADRIANAContext' not found.")
-    ));
+{
+    var connectionString = builder.Configuration.GetConnectionString("CHA_CASA_NOVA_ADRIANAContext")
+        ?? throw new InvalidOperationException("Connection string 'CHA_CASA_NOVA_ADRIANAContext' not found.");
+
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+});
 
 builder.Services.AddControllersWithViews();
 
@@ -24,11 +26,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<CHA_CASA_NOVA_ADRIANAContext>();
-    context.Database.Migrate();
-    context.Database.ExecuteSqlRaw("""
-        ALTER TABLE "Produto"
-        ADD COLUMN IF NOT EXISTS "Categoria" character varying(50);
-        """);
+    context.Database.EnsureCreated();
 }
 
 if (!app.Environment.IsDevelopment())

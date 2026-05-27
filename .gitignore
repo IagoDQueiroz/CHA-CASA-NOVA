@@ -178,6 +178,8 @@ DocProject/Help/html
 
 # Click-Once directory
 publish/
+publish-test/
+publish*/
 
 # Publish Web Output
 *.[Pp]ublish.xml
@@ -361,6 +363,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/appsettings.json
-/README.md
-/CONTEXTO_PROJETO.md
+appsettings.Local.json
+appsettings.*.local.json

@@ -8,6 +8,12 @@ builder.Services.AddDbContext<CHA_CASA_NOVA_ADRIANAContext>(options =>
     var connectionString = builder.Configuration.GetConnectionString("CHA_CASA_NOVA_ADRIANAContext")
         ?? throw new InvalidOperationException("Connection string 'CHA_CASA_NOVA_ADRIANAContext' not found.");
 
+    if (string.IsNullOrWhiteSpace(connectionString))
+    {
+        throw new InvalidOperationException(
+            "Connection string 'CHA_CASA_NOVA_ADRIANAContext' is empty. Configure 'ConnectionStrings__CHA_CASA_NOVA_ADRIANAContext' in the server or User Secrets locally.");
+    }
+
     options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 36)));
 });
 

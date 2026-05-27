@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>CHA_CASA_NOVA_ADRIANA</RootNamespace>
+    <UserSecretsId>cha-casa-nova-adriana-withcode</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

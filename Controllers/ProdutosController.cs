@@ -114,6 +114,8 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
         [AdminRequired]
         public IActionResult Create(Produto produto)
         {
+            ValidarUrlsHttps(produto);
+
             if (ModelState.IsValid)
             {
                 _context.Add(produto);
@@ -149,22 +151,31 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
         [AdminRequired]
         public IActionResult Edit(Produto produto)
         {
+            ValidarUrlsHttps(produto);
+
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(produto);
-                    _context.SaveChanges();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProdutoExists(produto.Id))
-                    {
-                        return NotFound();
-                    }
+                var produtoBanco = _context.Produto.Find(produto.Id);
 
-                    throw;
+                if (produtoBanco == null)
+                {
+                    return NotFound();
                 }
+
+                produtoBanco.Nome = produto.Nome;
+                produtoBanco.Descricao = produto.Descricao;
+                produtoBanco.Valor = produto.Valor;
+                produtoBanco.ImagemUrl = produto.ImagemUrl;
+                produtoBanco.Categoria = produto.Categoria;
+                produtoBanco.LinkProduto = produto.LinkProduto;
+                produtoBanco.Quantidade = produto.Quantidade;
+                produtoBanco.Doado = produto.Doado;
+                produtoBanco.Doador = produto.Doador;
+                produtoBanco.TelefoneDoador = produto.TelefoneDoador;
+                produtoBanco.EmailDoador = produto.EmailDoador;
+                produtoBanco.FormaEntrega = produto.FormaEntrega;
+
+                _context.SaveChanges();
 
                 return RedirectToAction(nameof(Index));
             }
@@ -316,6 +327,30 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
             {
                 return false;
             }
+        }
+
+        private void ValidarUrlsHttps(Produto produto)
+        {
+            if (!UrlHttpsValida(produto.ImagemUrl))
+            {
+                ModelState.AddModelError(nameof(produto.ImagemUrl), "Informe uma URL HTTPS válida.");
+            }
+
+            if (!UrlHttpsValida(produto.LinkProduto))
+            {
+                ModelState.AddModelError(nameof(produto.LinkProduto), "Informe um link HTTPS válido.");
+            }
+        }
+
+        private static bool UrlHttpsValida(string? url)
+        {
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                return true;
+            }
+
+            return Uri.TryCreate(url, UriKind.Absolute, out var uri) &&
+                   uri.Scheme == Uri.UriSchemeHttps;
         }
     }
 }

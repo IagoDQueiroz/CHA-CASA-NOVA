@@ -8,17 +8,21 @@ builder.Services.AddDbContext<CHA_CASA_NOVA_ADRIANAContext>(options =>
     var connectionString = builder.Configuration.GetConnectionString("CHA_CASA_NOVA_ADRIANAContext")
         ?? throw new InvalidOperationException("Connection string 'CHA_CASA_NOVA_ADRIANAContext' not found.");
 
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+    options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 36)));
 });
 
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddMemoryCache();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.IdleTimeout = TimeSpan.FromMinutes(20);
+    options.Cookie.Name = "__Host-ChaCasaNova.Session";
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
+    options.Cookie.SameSite = SameSiteMode.Strict;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 });
 
 var app = builder.Build();
@@ -36,6 +40,16 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.TryAdd("X-Content-Type-Options", "nosniff");
+    context.Response.Headers.TryAdd("X-Frame-Options", "DENY");
+    context.Response.Headers.TryAdd("Referrer-Policy", "strict-origin-when-cross-origin");
+    context.Response.Headers.TryAdd("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+    await next();
+});
+
 app.UseRouting();
 
 app.UseSession();

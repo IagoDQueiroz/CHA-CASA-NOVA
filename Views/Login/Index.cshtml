@@ -48,11 +48,16 @@
             <div class="login-codigo-box">
                 <div class="grupo-form">
                     <label for="codigo">Código de acesso</label>
-                    <input type="number"
+                    <input type="text"
                            name="codigo"
                            id="codigo"
                            class="input-form input-codigo"
-                           placeholder="0000"
+                           placeholder="ABCD2345"
+                           maxlength="8"
+                           minlength="8"
+                           autocomplete="one-time-code"
+                           autocapitalize="characters"
+                           spellcheck="false"
                            required />
                 </div>
             </div>

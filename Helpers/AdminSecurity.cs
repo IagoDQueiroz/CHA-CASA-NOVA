@@ -17,6 +17,10 @@ namespace CHA_CASA_NOVA_ADRIANA.Helpers
             for (int i = 0; i < length; i++)
             {
                 code[i] = CodeAlphabet[randomBytes[i] % CodeAlphabet.Length];
+
+
+
+
             }
 
             return new string(code);

@@ -1,20 +1,55 @@
-<footer class="footer-site" style="text-align:center;">
-
-    <div class="footer-conteudo" style="display:flex; justify-content:center; align-items:center;">
-
-        <div class="footer-coluna footer-coluna-principal" style="max-width:600px;">
-
-            <h4>Chá de Casa Nova</h4>
-
-            <p>
-                Obrigado por participar deste momento. Sua presença e contribuição fazem diferença na construção dessa nova etapa.
-            </p>
-
-        </div>
+<!-- ============ FOOTER ============ -->
+<footer class="footer" id="contato">
+  <div class="footer__inner">
+    <div>
+      <h3 class="footer__brand-name">Chá de Casa Nova</h3>
+      <p class="footer__brand-tagline">Vitória & Rodrigo estão unindo suas vidas e montando o primeiro lar deles com todo amor, carinho e com a sua essencial presença.</p>
+      <div class="footer__social">
+        <a href="#" class="footer__social-link" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17" cy="7" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="#" class="footer__social-link" aria-label="WhatsApp">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        </a>
+      </div>
     </div>
 
-    <div class="footer-copy" style="text-align:center;">
-        <p>Desenvolvido por WithCode</p>
+    <div>
+      <h4 class="footer__col-title">Navegação</h4>
+      <nav class="footer__links">
+        <a href="@Url.Action("Index", "Produtos")#inicio" class="footer__link">Início</a>
+        <a href="@Url.Action("Presentes", "Produtos")" class="footer__link">Lista de Presentes</a>
+        <a href="@Url.Action("Index", "Produtos")#historia" class="footer__link">Sobre Nós</a>
+        <a href="@Url.Action("Index", "Produtos")#como-funciona" class="footer__link">Como funciona</a>
+        <a href="@Url.Action("Index", "Produtos")#recados" class="footer__link">Deixar Recado</a>
+        <a href="@Url.Action("Index", "Login")" class="footer__link" style="color: var(--color-gold-light); font-weight: 600;">Área Administrativa</a>
+      </nav>
     </div>
 
+    <div>
+      <h4 class="footer__col-title">Informações</h4>
+      <div class="footer__links">
+        <span class="footer__link">📍 Maceió, AL</span>
+        <span class="footer__link">📅 27 de Junho de 2026</span>
+        <span class="footer__link">📧 contato@vitoriaerodrigo.com</span>
+      </div>
+    </div>
+
+    <div>
+      <h4 class="footer__col-title">Contribuição Pix</h4>
+      <div class="footer__pix">
+        <p class="footer__pix-label">Chave Pix</p>
+        <p class="footer__pix-key">vitoriaerodrigo@email.com</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <p class="footer__copyright">© 2026 Vitória & Rodrigo — Todos os direitos reservados</p>
+    <p class="footer__heart">
+      Feito com
+      <svg viewBox="0 0 24 24" width="12" height="12"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z" fill="var(--color-gold-dark)"/></svg>
+      para celebrar
+    </p>
+  </div>
 </footer>

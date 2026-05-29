@@ -1,87 +1,227 @@
 @model List<CHA_CASA_NOVA_ADRIANA.Models.Produto>
 
 @{
-    ViewData["Title"] = "Painel Admin";
+    ViewData["Title"] = "Painel Administrativo — Vitória & Rodrigo";
+    Layout = null;
     var cultura = System.Globalization.CultureInfo.GetCultureInfo("pt-BR");
 }
 
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Painel Admin - Chá de Casa Nova</title>
-<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-<link rel="icon" type="image/png" href="~/favicon.png" />
-<link rel="apple-touch-icon" href="~/favicon.png" />
-<link rel="stylesheet" href="~/css/site.css" />
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>@ViewData["Title"]</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="~/images/Icone/casa_dourada_rabisco.svg">
 
-<main class="pagina-lista-presentes">
-    <section class="admin-painel">
-        <div class="admin-painel-topo">
-            <div>
-                <span class="secao-subtitulo">Administração</span>
-                <h1>Painel da Lista</h1>
-            </div>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-            <div class="acoes-formulario">
-                <a asp-action="Create" class="btn-principal">Cadastrar Produto</a>
-                <a asp-action="Index" class="btn-secundario">Ver Home</a>
-            </div>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="~/css/variables.css" asp-append-version="true">
+  <link rel="stylesheet" href="~/css/base.css" asp-append-version="true">
+  <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true">
+  <link rel="stylesheet" href="~/css/modal.css" asp-append-version="true">
+</head>
+<body style="min-height: 100vh; display: flex; flex-direction: column; background: var(--color-warm-white);">
+
+  <!-- Navbar Administrativa -->
+  <header class="admin-header">
+    <div class="admin-header__inner">
+      <div class="admin-header__brand">
+        <span class="admin-header__badge">WithCode</span>
+        <h1 class="admin-header__title">Painel Administrativo</h1>
+      </div>
+      <div class="admin-header__actions">
+        <a href="@Url.Action("Index", "Produtos")" class="btn btn--ghost" style="color: var(--color-dark-2); border-color: var(--color-cream-soft); background: #fff; padding: 0.6rem 1.2rem; display: inline-flex; align-items: center;">
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" aria-hidden="true" style="margin-right: 4px;">
+            <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+          </svg>
+          Ver Site
+        </a>
+        <a href="@Url.Action("Logout", "Login")" class="btn btn--outline-gold" style="padding: 0.6rem 1.2rem;">
+          Sair
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Painel Conteúdo -->
+  <main class="admin-main">
+    <div class="container">
+      <div class="admin-title-row">
+        <div>
+          <span class="section-label" style="text-align: left; margin: 0;">Vitória & Rodrigo</span>
+          <h2 class="admin-title">Gerenciador de Presentes</h2>
         </div>
+        <a href="@Url.Action("Create", "Produtos")" class="btn btn--primary" style="display: inline-flex; align-items: center; gap: 4px;">
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5" aria-hidden="true">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+          Cadastrar Presente
+        </a>
+      </div>
 
-        <div class="admin-resumo">
-            <div class="mini-info-card">
-                <span class="mini-info-numero">@ViewBag.Total</span>
-                <span class="mini-info-texto">Total</span>
-            </div>
-
-            <div class="mini-info-card">
-                <span class="mini-info-numero">@ViewBag.Disponiveis</span>
-                <span class="mini-info-texto">Disponíveis</span>
-            </div>
-
-            <div class="mini-info-card">
-                <span class="mini-info-numero">@ViewBag.Doados</span>
-                <span class="mini-info-texto">Doados</span>
-            </div>
-
-            <div class="mini-info-card">
-                <span class="mini-info-numero">@(((decimal)ViewBag.ValorTotal).ToString("C", cultura))</span>
-                <span class="mini-info-texto">Valor total</span>
-            </div>
+      <!-- Cards de Resumo -->
+      <section class="admin-stats">
+        <div class="stat-card">
+          <span class="stat-card__number">@ViewBag.Total</span>
+          <span class="stat-card__label">Total de Itens</span>
         </div>
-
-        <div class="admin-tabela-wrap">
-            <table class="admin-tabela">
-                <thead>
-                    <tr>
-                        <th>Produto</th>
-                        <th>Categoria</th>
-                        <th>Valor</th>
-                        <th>Status</th>
-                        <th>Doador</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var produto in Model)
-                    {
-                        <tr>
-                            <td>@produto.Nome</td>
-                            <td>@(produto.Categoria ?? "-")</td>
-                            <td>@produto.Valor.ToString("C", cultura)</td>
-                            <td>@(produto.Doado ? "Doado" : "Disponível")</td>
-                            <td>@(produto.Doador ?? "-")</td>
-                            <td class="admin-acoes">
-                                <a asp-action="Details" asp-route-id="@produto.Id">Detalhes</a>
-                                <a asp-action="Edit" asp-route-id="@produto.Id">Editar</a>
-                                <a asp-action="Delete" asp-route-id="@produto.Id">Excluir</a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+        <div class="stat-card">
+          <span class="stat-card__number" style="color: #2c9c5c;">@ViewBag.Disponiveis</span>
+          <span class="stat-card__label">Itens Disponíveis</span>
         </div>
-    </section>
-</main>
+        <div class="stat-card">
+          <span class="stat-card__number" style="color: var(--color-gold-dark);">@ViewBag.Doados</span>
+          <span class="stat-card__label">Itens Presenteados</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card__number">@(((decimal)ViewBag.ValorTotal).ToString("C", cultura))</span>
+          <span class="stat-card__label">Valor Total do Catálogo</span>
+        </div>
+      </section>
 
-<div style="margin-top:auto;">
-    @await Html.PartialAsync("_SiteFooter")
-</div>
+      <!-- Tabela de Presentes -->
+      <section class="admin-table-section">
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Produto</th>
+                <th>Categoria</th>
+                <th>Valor</th>
+                <th>Status</th>
+                <th>Doador</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if (Model == null || Model.Count == 0)
+              {
+                  <tr>
+                    <td colspan="6" style="text-align: center; color: rgba(40,35,35,0.4); padding: 30px 0;">
+                      Nenhum presente cadastrado no catálogo.
+                    </td>
+                  </tr>
+              }
+              else
+              {
+                  @foreach (var p in Model)
+                  {
+                      <tr>
+                        <td style="font-weight: 600;">@p.Nome</td>
+                        <td>@(p.Categoria ?? "Outros")</td>
+                        <td style="font-weight: 700;">@p.Valor.ToString("C", cultura)</td>
+                        <td>
+                            @if (p.Doado)
+                            {
+                                <span class="badge badge--reserved" style="box-shadow:none;">Reservado</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge--available" style="box-shadow:none;">Disponível</span>
+                            }
+                        </td>
+                        <td>@(p.Doado ? (p.Doador ?? "Anônimo") : "-")</td>
+                        <td>
+                          <div class="admin-acoes">
+                            <a href="@Url.Action("Edit", new { id = p.Id })" class="admin-acoes-btn admin-acoes-btn--edit">Editar</a>
+                            <a href="@Url.Action("Delete", new { id = p.Id })" class="admin-acoes-btn admin-acoes-btn--delete" onclick="return confirm('Deseja realmente excluir &quot;@p.Nome&quot;?');">Excluir</a>
+                          </div>
+                        </td>
+                      </tr>
+                  }
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Gerenciador de Recados -->
+      <div class="admin-title-row" style="margin-top: var(--space-xl);">
+        <div>
+          <h2 class="admin-title">Gerenciador de Recados</h2>
+        </div>
+      </div>
+
+      <!-- Tabela de Recados -->
+      <section class="admin-table-section" style="margin-bottom: var(--space-xl);">
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Autor</th>
+                <th>Mensagem</th>
+                <th>Data</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if (ViewBag.Recados == null || ((List<CHA_CASA_NOVA_ADRIANA.Models.Recado>)ViewBag.Recados).Count == 0)
+              {
+                  <tr>
+                    <td colspan="4" style="text-align: center; color: rgba(40,35,35,0.4); padding: 30px 0;">
+                      Nenhum recado postado no mural.
+                    </td>
+                  </tr>
+              }
+              else
+              {
+                  @foreach (var r in (List<CHA_CASA_NOVA_ADRIANA.Models.Recado>)ViewBag.Recados)
+                  {
+                      <tr>
+                        <td style="font-weight: 600;">@r.Nome</td>
+                        <td style="max-width: 400px; white-space: normal; word-break: break-word;">@r.Mensagem</td>
+                        <td>@r.DataCriacao.ToString("dd MMM yyyy HH:mm", cultura)</td>
+                        <td>
+                          <div class="admin-acoes">
+                            <form method="POST" action="@Url.Action("ExcluirRecado", "Produtos")" onsubmit="return confirm('Deseja realmente excluir o recado de &quot;@r.Nome&quot;?');" style="display:inline;">
+                              @Html.AntiForgeryToken()
+                              <input type="hidden" name="id" value="@r.Id" />
+                              <button type="submit" class="admin-acoes-btn admin-acoes-btn--delete">Excluir</button>
+                            </form>
+                          </div>
+                        </td>
+                      </tr>
+                  }
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Rodapé Administrativo -->
+  <footer class="admin-footer">
+    <p>© 2026 Vitória & Rodrigo — Desenvolvido por WithCode</p>
+  </footer>
+
+  <!-- Toast de Notificação -->
+  <div class="toast" id="toast" role="alert" aria-live="assertive">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+    <span id="toast-msg">Salvo com sucesso!</span>
+  </div>
+
+  <script>
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-msg');
+      if (!toast || !toastMsg) return;
+
+      toastMsg.textContent = msg;
+      toast.classList.add('show');
+
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 4000);
+    }
+  </script>
+</body>
+</html>

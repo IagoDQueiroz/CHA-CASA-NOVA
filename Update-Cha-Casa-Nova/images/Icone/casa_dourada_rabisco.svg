@@ -1,0 +1,55 @@
+<svg width="100%" viewBox="0 0 680 680" role="img" xmlns="http://www.w3.org/2000/svg" style="">
+  <title style="fill:rgb(0, 0, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">Ícone de casa desenhada como rabisco dourado</title>
+  <desc style="fill:rgb(0, 0, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">Uma casa estilizada desenhada com traços irregulares como um rabisco, em tons dourados</desc>
+
+  
+
+  <!-- Telhado principal - traço como rabisco -->
+  <path stroke-width="14" stroke-opacity="0.9" d="M100 340 L342 118 L578 340" style="fill:none;stroke:rgb(200, 150, 12);color:rgb(255, 255, 255);stroke-width:14px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Segundo traço do telhado (duplicado ligeiramente deslocado para efeito rabisco) -->
+  <path stroke-width="6" stroke-opacity="0.45" d="M105 344 L344 122 L574 344" style="fill:none;stroke:rgb(200, 150, 12);color:rgb(255, 255, 255);stroke-width:6px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Paredes da casa -->
+  <path stroke-width="14" stroke-opacity="0.9" d="M152 316 L152 560 L532 560 L532 316" style="fill:none;stroke:rgb(200, 150, 12);color:rgb(255, 255, 255);stroke-width:14px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Segundo traço das paredes (efeito rabisco) -->
+  <path stroke-width="5" stroke-opacity="0.4" d="M157 318 L156 556 L527 558 L528 320" style="fill:none;stroke:rgb(200, 150, 12);color:rgb(255, 255, 255);stroke-width:5px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Porta -->
+  <path stroke-width="11" stroke-opacity="0.85" d="M282 560 L280 438 Q340 418 402 438 L402 560" style="fill:none;stroke:rgb(200, 150, 12);color:rgb(255, 255, 255);stroke-width:11px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Segundo traço da porta (efeito rabisco) -->
+  <path stroke-width="4.5" stroke-opacity="0.4" d="M285 560 L284 441 Q341 422 399 440 L399 558" style="fill:none;stroke:rgb(200, 150, 12);color:rgb(255, 255, 255);stroke-width:4.5px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Janela esquerda -->
+  <path stroke-width="10" stroke-opacity="0.85" d="M192 370 L192 460 L268 462 L270 372 Z" style="fill:none;stroke:rgb(200, 150, 12);color:rgb(255, 255, 255);stroke-width:10px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Cruz janela esquerda -->
+  <path stroke-width="7" stroke-opacity="0.55" d="M192 416 L268 415 M230 370 L230 462" style="fill:none;stroke:rgb(200, 150, 12);color:rgb(255, 255, 255);stroke-width:7px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Janela direita -->
+  <path stroke-width="10" stroke-opacity="0.85" d="M410 370 L410 460 L488 462 L490 373 Z" style="fill:none;stroke:rgb(200, 150, 12);color:rgb(255, 255, 255);stroke-width:10px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Cruz janela direita -->
+  <path stroke-width="7" stroke-opacity="0.55" d="M410 416 L488 415 M449 370 L449 462" style="fill:none;stroke:rgb(200, 150, 12);color:rgb(255, 255, 255);stroke-width:7px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Chaminé -->
+  <path stroke-width="11" stroke-opacity="0.88" d="M430 230 L430 168 L478 168 L480 246" style="fill:none;stroke:rgb(200, 150, 12);color:rgb(255, 255, 255);stroke-width:11px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Segundo traço da chaminé (efeito rabisco) -->
+  <path stroke-width="4" stroke-opacity="0.4" d="M426 228 L427 165 L482 166 L483 248" style="fill:none;stroke:rgb(200, 150, 12);color:rgb(255, 255, 255);stroke-width:4px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Fumaça da chaminé (espiral leve) -->
+  <path stroke-width="6" stroke-opacity="0.5" d="M454 160 Q462 140 448 126 Q434 112 444 96 Q454 82 466 90" style="fill:none;stroke:rgb(200, 150, 12);color:rgb(255, 255, 255);stroke-width:6px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Traço extra de textura no telhado (rabisco) -->
+  <path stroke-width="4" stroke-opacity="0.25" d="M220 268 L342 162 L462 270" style="fill:none;stroke:rgb(200, 150, 12);color:rgb(255, 255, 255);stroke-width:4px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Maçaneta porta -->
+  <circle cx="394" cy="500" r="8" fill="none" stroke="#C8960C" stroke-width="8" stroke-opacity="0.8" style="fill:none;stroke:rgb(200, 150, 12);color:rgb(255, 255, 255);stroke-width:8px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Textura solo / grama (tracinhos irregulares) -->
+  <path stroke-width="6" stroke-opacity="0.35" d="M90 566 Q130 552 180 564 Q240 555 310 568 Q390 554 450 566 Q510 554 580 564 Q610 558 620 566" style="fill:none;stroke:rgb(200, 150, 12);color:rgb(255, 255, 255);stroke-width:6px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <path stroke-width="3.5" stroke-opacity="0.2" d="M92 574 Q160 564 230 572 Q320 562 400 574 Q480 562 560 572 Q600 566 622 574" style="fill:none;stroke:rgb(200, 150, 12);color:rgb(255, 255, 255);stroke-width:3.5px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+</svg>

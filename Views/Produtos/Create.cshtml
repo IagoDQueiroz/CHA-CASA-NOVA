@@ -1,127 +1,184 @@
-﻿@model CHA_CASA_NOVA_ADRIANA.Models.Produto
+@model CHA_CASA_NOVA_ADRIANA.Models.Produto
 
 @{
     bool editando = Model != null && Model.Id > 0;
-    ViewData["Title"] = editando ? "Editar Produto" : "Cadastrar Produto";
+    ViewData["Title"] = editando ? "Editar Presente" : "Cadastrar Presente";
+    Layout = null;
+    var cultura = System.Globalization.CultureInfo.GetCultureInfo("pt-BR");
 }
 
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>@ViewData["Title"] - Chá de Casa Nova</title>
-<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-<link rel="icon" type="image/png" href="~/favicon.png" />
-<link rel="apple-touch-icon" href="~/favicon.png" />
-<link rel="stylesheet" href="~/css/site.css" />
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>@ViewData["Title"] — Vitória & Rodrigo</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="~/images/Icone/casa_dourada_rabisco.svg">
 
-<div class="pagina-formulario">
-    <div class="form-container">
-        <div class="topo-formulario">
-            <h1>@(editando ? "Editar Produto" : "Cadastrar Produto")</h1>
-            <p>
-                @(editando
-                    ? "Atualize as informações do item da lista."
-                    : "Adicione um novo item à lista de presentes.")
-            </p>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="~/css/variables.css" asp-append-version="true">
+  <link rel="stylesheet" href="~/css/base.css" asp-append-version="true">
+  <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true">
+  <link rel="stylesheet" href="~/css/modal.css" asp-append-version="true">
+</head>
+<body style="min-height: 100vh; display: flex; flex-direction: column; background: var(--color-warm-white); justify-content: center; align-items: center; padding: var(--space-xl) var(--space-md);">
+
+  <div class="login-card" style="max-width: 700px; width: 100%; background: #fff; border: 1.5px solid var(--color-cream-soft); color: var(--color-dark-2); padding: var(--space-2xl) var(--space-xl);">
+    <div class="login-card__brand" style="margin-bottom: var(--space-xl);">
+      <span class="login-card__badge" style="background: var(--color-gold-light); color: var(--color-gold-deeper);">WithCode Admin</span>
+      <h1 class="login-card__title" style="color: var(--color-gold-dark);">@ViewData["Title"]</h1>
+      <p class="login-card__subtitle" style="color: rgba(40,35,35,0.6);">
+        @(editando ? "Atualize as informações do presente na lista de presentes pública." : "Preencha as informações do produto abaixo para adicioná-lo à lista pública.")
+      </p>
+    </div>
+
+    <form class="modal-confirm__form" asp-action="@(editando ? "Edit" : "Create")" method="post">
+      @Html.AntiForgeryToken()
+      @if (editando)
+      {
+          <input type="hidden" asp-for="Id" />
+      }
+
+      <div asp-validation-summary="ModelOnly" style="color: #c94b4b; font-size: var(--fs-xs); margin-bottom: var(--space-md);"></div>
+
+      <div class="form-group">
+        <label asp-for="Nome">Nome do Produto *</label>
+        <input asp-for="Nome" required placeholder="Ex: Air Fryer Philco 5,5L" style="background: rgba(13, 11, 11, 0.02); border: 1.5px solid var(--color-cream-soft); border-radius: var(--radius-md); padding: 12px; color: var(--color-dark-2); width: 100%;" />
+        <span asp-validation-for="Nome" style="color: #c94b4b; font-size: var(--fs-xs);"></span>
+      </div>
+
+      <div class="linha-dupla">
+        <div class="form-group">
+          <label asp-for="Valor">Preço (R$) *</label>
+          <input asp-for="Valor" type="text" required placeholder="Ex: 549,90" style="background: rgba(13, 11, 11, 0.02); border: 1.5px solid var(--color-cream-soft); border-radius: var(--radius-md); padding: 12px; color: var(--color-dark-2); width: 100%;" />
+          <span asp-validation-for="Valor" style="color: #c94b4b; font-size: var(--fs-xs);"></span>
+        </div>
+        <div class="form-group">
+          <label asp-for="Categoria">Categoria *</label>
+          <select asp-for="Categoria" required style="background: rgba(13, 11, 11, 0.02); border: 1.5px solid var(--color-cream-soft); border-radius: var(--radius-md); padding: 12px; color: var(--color-dark-2); width: 100%;">
+            <option value="">Selecione</option>
+            <option value="cozinha">Cozinha</option>
+            <option value="sala">Sala</option>
+            <option value="quarto">Quarto</option>
+            <option value="eletros">Eletrodomésticos</option>
+            <option value="decoracao">Decoração</option>
+            <option value="banheiro">Banheiro</option>
+            <option value="outros">Outros</option>
+          </select>
+          <span asp-validation-for="Categoria" style="color: #c94b4b; font-size: var(--fs-xs);"></span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label asp-for="Descricao">Descrição Curta *</label>
+        <textarea asp-for="Descricao" required placeholder="Descreva brevemente o item..." style="background: rgba(13, 11, 11, 0.02); border: 1.5px solid var(--color-cream-soft); border-radius: var(--radius-md); padding: 12px; color: var(--color-dark-2); width: 100%; height: 100px; resize: vertical;"></textarea>
+        <span asp-validation-for="Descricao" style="color: #c94b4b; font-size: var(--fs-xs);"></span>
+      </div>
+
+      <div class="form-group">
+        <label asp-for="ImagemUrl">URL da Imagem</label>
+        <input asp-for="ImagemUrl" id="ImagemUrl" placeholder="https://exemplo.com/imagem.jpg" oninput="atualizarPreview()" style="background: rgba(13, 11, 11, 0.02); border: 1.5px solid var(--color-cream-soft); border-radius: var(--radius-md); padding: 12px; color: var(--color-dark-2); width: 100%;" />
+        <span asp-validation-for="ImagemUrl" style="color: #c94b4b; font-size: var(--fs-xs);"></span>
+      </div>
+
+      <div class="preview-imagem" style="display: flex; justify-content: center; margin-bottom: var(--space-md);">
+         <img id="previewImg" src="@Model?.ImagemUrl" alt="Preview da imagem" style="max-height: 120px; border-radius: var(--radius-md); border: 1px solid var(--color-cream-soft); @(string.IsNullOrEmpty(Model?.ImagemUrl) ? "display: none;" : "")" />
+      </div>
+
+      <div class="form-group">
+        <label asp-for="LinkProduto">Link do Produto (Opcional)</label>
+        <input asp-for="LinkProduto" placeholder="https://loja.com/produto" style="background: rgba(13, 11, 11, 0.02); border: 1.5px solid var(--color-cream-soft); border-radius: var(--radius-md); padding: 12px; color: var(--color-dark-2); width: 100%;" />
+        <span asp-validation-for="LinkProduto" style="color: #c94b4b; font-size: var(--fs-xs);"></span>
+      </div>
+
+      <div class="form-group">
+        <label asp-for="Quantidade">Quantidade</label>
+        <input asp-for="Quantidade" type="number" min="1" max="99" style="background: rgba(13, 11, 11, 0.02); border: 1.5px solid var(--color-cream-soft); border-radius: var(--radius-md); padding: 12px; color: var(--color-dark-2); width: 100%;" />
+        <span asp-validation-for="Quantidade" style="color: #c94b4b; font-size: var(--fs-xs);"></span>
+      </div>
+
+      <!-- Seção de Doação / Reservado -->
+      <div style="border-top: 1px dashed var(--color-cream-soft); padding-top: var(--space-md); margin-top: var(--space-md);">
+        <h3 style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-gold-dark); margin-bottom: var(--space-sm);">Status de Reserva</h3>
+        
+        <div class="form-group" style="flex-direction: row; align-items: center; gap: 8px; cursor: pointer;">
+          <input asp-for="Doado" id="Doado" style="width: auto; cursor: pointer;" onchange="toggleDoadorFields()" />
+          <label asp-for="Doado" style="margin: 0; cursor: pointer;">Este item já foi presenteado</label>
         </div>
 
-        <form asp-action="@(editando ? "Edit" : "Create")" method="post" class="formulario-produto">
-            @if (editando)
-            {
-                <input type="hidden" asp-for="Id" />
-                <input type="hidden" asp-for="TelefoneDoador" />
-                <input type="hidden" asp-for="EmailDoador" />
-                <input type="hidden" asp-for="FormaEntrega" />
-            }
-
-            <div asp-validation-summary="ModelOnly" class="mensagem-erro"></div>
-
-            <div class="grupo-form">
-                <label asp-for="Nome"></label>
-                <input asp-for="Nome" class="input-form" placeholder="Ex: Air Fryer" />
-                <span asp-validation-for="Nome" class="texto-validacao"></span>
+        <div id="donor-fields" style="display: @(Model != null && Model.Doado ? "block" : "none"); margin-top: var(--space-sm);">
+          <div class="linha-dupla">
+            <div class="form-group">
+              <label asp-for="Doador">Nome do Doador</label>
+              <input asp-for="Doador" id="Doador" placeholder="Nome de quem presenteou" style="background: rgba(13, 11, 11, 0.02); border: 1.5px solid var(--color-cream-soft); border-radius: var(--radius-md); padding: 12px; color: var(--color-dark-2); width: 100%;" />
+              <span asp-validation-for="Doador" style="color: #c94b4b; font-size: var(--fs-xs);"></span>
             </div>
-
-            <div class="grupo-form">
-                <label asp-for="Descricao"></label>
-                <textarea asp-for="Descricao" class="input-form textarea-form" placeholder="Descreva o produto"></textarea>
-                <span asp-validation-for="Descricao" class="texto-validacao"></span>
+            <div class="form-group">
+              <label asp-for="TelefoneDoador">Telefone do Doador</label>
+              <input asp-for="TelefoneDoador" placeholder="(82) 99999-0000" style="background: rgba(13, 11, 11, 0.02); border: 1.5px solid var(--color-cream-soft); border-radius: var(--radius-md); padding: 12px; color: var(--color-dark-2); width: 100%;" />
+              <span asp-validation-for="TelefoneDoador" style="color: #c94b4b; font-size: var(--fs-xs);"></span>
             </div>
-
-            <div class="linha-dupla">
-                <div class="grupo-form">
-                    <label asp-for="Valor"></label>
-                    <input asp-for="Valor" class="input-form" placeholder="Ex: 199,90" />
-                    <span asp-validation-for="Valor" class="texto-validacao"></span>
-                </div>
-
-                <div class="grupo-form">
-                    <label asp-for="Quantidade"></label>
-                    <input asp-for="Quantidade" class="input-form" placeholder="Ex: 1" />
-                    <span asp-validation-for="Quantidade" class="texto-validacao"></span>
-                </div>
+          </div>
+          <div class="linha-dupla">
+            <div class="form-group">
+              <label asp-for="EmailDoador">E-mail do Doador</label>
+              <input asp-for="EmailDoador" placeholder="email@exemplo.com" style="background: rgba(13, 11, 11, 0.02); border: 1.5px solid var(--color-cream-soft); border-radius: var(--radius-md); padding: 12px; color: var(--color-dark-2); width: 100%;" />
+              <span asp-validation-for="EmailDoador" style="color: #c94b4b; font-size: var(--fs-xs);"></span>
             </div>
-
-            <div class="grupo-form">
-                <label asp-for="Categoria"></label>
-                <input asp-for="Categoria" class="input-form" placeholder="Ex: Cozinha, Quarto, Banheiro" />
-                <span asp-validation-for="Categoria" class="texto-validacao"></span>
+            <div class="form-group">
+              <label asp-for="FormaEntrega">Forma de Entrega</label>
+              <select asp-for="FormaEntrega" style="background: rgba(13, 11, 11, 0.02); border: 1.5px solid var(--color-cream-soft); border-radius: var(--radius-md); padding: 12px; color: var(--color-dark-2); width: 100%;">
+                <option value="">Selecione</option>
+                <option value="pix">Pix (Valor do Presente)</option>
+                <option value="envio">Entrega no Endereço</option>
+                <option value="maos">Entregar em Mãos</option>
+              </select>
+              <span asp-validation-for="FormaEntrega" style="color: #c94b4b; font-size: var(--fs-xs);"></span>
             </div>
+          </div>
+        </div>
+      </div>
 
-            <div class="grupo-form">
-                <label asp-for="LinkProduto"></label>
-                <input asp-for="LinkProduto" class="input-form" />
-                <span asp-validation-for="LinkProduto" class="texto-validacao"></span>
-            </div>
+      <div class="login-form__actions" style="margin-top: var(--space-xl);">
+        <a href="@Url.Action("Admin")" class="btn btn--outline-gold" style="padding: 0.8rem 1.8rem;">Voltar</a>
+        <button type="submit" class="btn btn--primary" style="padding: 0.8rem 1.8rem; cursor: pointer;">
+          Salvar Presente
+        </button>
+      </div>
+    </form>
+  </div>
 
-            <div class="grupo-form">
-                <label asp-for="ImagemUrl"></label>
-                <input asp-for="ImagemUrl"
-                       class="input-form"
-                       placeholder="Cole a URL da imagem"
-                       oninput="atualizarPreviewImagem()" />
-                <span asp-validation-for="ImagemUrl" class="texto-validacao"></span>
-            </div>
+  @section Scripts {
+      @await Html.PartialAsync("_ValidationScriptsPartial")
+  }
 
-            <div class="preview-imagem-produto">
-                <img id="previewImagemProduto"
-                     src="@Model?.ImagemUrl"
-                     alt="Preview da imagem" />
-            </div>
-
-            <div class="grupo-form">
-                <label asp-for="Doador"></label>
-                <input asp-for="Doador" class="input-form" placeholder="Informe o nome do doador, se houver" />
-                <span asp-validation-for="Doador" class="texto-validacao"></span>
-            </div>
-
-            <div class="grupo-checkbox">
-                <input asp-for="Doado" />
-                <label asp-for="Doado">Produto já foi doado</label>
-            </div>
-
-            <div class="acoes-formulario">
-                <button type="submit" class="btn-principal">
-                    @(editando ? "Salvar Alterações" : "Salvar Produto")
-                </button>
-
-                <a asp-action="Index" class="btn-secundario">Voltar</a>
-            </div>
-        </form>
-    </div>
-</div>
-
-@await Html.PartialAsync("_SiteFooter")
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+  <script>
+    function toggleDoadorFields() {
+      const isChecked = document.getElementById("Doado").checked;
+      document.getElementById("donor-fields").style.display = isChecked ? "block" : "none";
+      if (!isChecked) {
+         document.getElementById("Doador").value = "";
+      }
     }
-}
 
-<script>
-    function atualizarPreviewImagem() {
-        const input = document.getElementById("ImagemUrl");
-        const preview = document.getElementById("previewImagemProduto");
-
-        preview.src = input.value;
+    function atualizarPreview() {
+      const urlInput = document.getElementById("ImagemUrl").value;
+      const preview = document.getElementById("previewImg");
+      if (urlInput.trim() !== "") {
+        preview.src = urlInput;
+        preview.style.display = "block";
+      } else {
+        preview.style.display = "none";
+      }
     }
-</script>
+  </script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Acesso Administrador — Vitória & Rodrigo</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="images/Icone/favicon.ico">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/modal.css"> <!-- Para os Toasts -->
+</head>
+<body>
+
+  <div class="login-page">
+    <div class="login-page__bg"></div>
+    <div class="login-page__overlay"></div>
+
+    <div class="login-card">
+      <div class="login-card__brand">
+        <span class="login-card__badge">WithCode</span>
+        <h1 class="login-card__title">Área Administrativa</h1>
+        <p class="login-card__subtitle">Solicite o código de acesso e informe abaixo para gerenciar a sua lista de presentes.</p>
+      </div>
+
+      <div id="login-error-alert" class="alert alert--danger" style="display: none;">
+        Código de acesso inválido ou expirado. Tente novamente.
+      </div>
+
+      <form class="login-form" id="login-form" novalidate>
+        <div class="login-codigo-box">
+          <div class="form-group">
+            <label for="login-code">Código de Acesso</label>
+            <input type="text" 
+                   id="login-code" 
+                   name="codigo"
+                   class="login-form__input" 
+                   placeholder="ABCD2345" 
+                   maxlength="8" 
+                   minlength="8" 
+                   autocomplete="one-time-code" 
+                   autocapitalize="characters" 
+                   spellcheck="false" 
+                   required>
+          </div>
+        </div>
+
+        <div class="login-form__actions">
+          <button type="button" class="btn btn--outline-gold" id="btn-request-code" style="padding: 0.8rem 1.2rem;">
+            Enviar Código
+          </button>
+          <button type="submit" class="btn btn--primary" id="btn-submit-login" style="padding: 0.8rem 1.8rem;">
+            Entrar
+          </button>
+        </div>
+
+        <a href="index.html" class="login-card__back-link">
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" aria-hidden="true">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+          Voltar para o site
+        </a>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast" role="alert" aria-live="assertive">
+    <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+    <span id="toast-msg">Código enviado por e-mail com sucesso!</span>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

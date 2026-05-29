@@ -1,12 +1,3 @@
-@model List<CHA_CASA_NOVA_ADRIANA.Models.Produto>
-
-@{
-    ViewData["Title"] = "Chá de Casa Nova — Vitória & Rodrigo";
-    Layout = null;
-    var adminLogado = Context.Session.GetString("AdminLogado") == "true";
-    var cultura = System.Globalization.CultureInfo.GetCultureInfo("pt-BR");
-}
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -15,10 +6,10 @@
   <meta name="description" content="Chá de Casa Nova — Vitória & Rodrigo. Participe da construção do nosso novo lar escolhendo um presente e deixando um recado especial!">
   <meta name="robots" content="index, follow">
   
-  <title>@ViewData["Title"]</title>
+  <title>Chá de Casa Nova — Vitória & Rodrigo</title>
 
   <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="~/images/Icone/casa_dourada_rabisco.svg">
+  <link rel="icon" type="image/x-icon" href="images/Icone/casa_dourada_rabisco.svg">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,14 +17,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Great+Vibes&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="~/css/variables.css" asp-append-version="true">
-  <link rel="stylesheet" href="~/css/base.css" asp-append-version="true">
-  <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true">
-  <link rel="stylesheet" href="~/css/hero.css" asp-append-version="true">
-  <link rel="stylesheet" href="~/css/sections.css" asp-append-version="true">
-  <link rel="stylesheet" href="~/css/presentes.css" asp-append-version="true">
-  <link rel="stylesheet" href="~/css/extra-sections.css" asp-append-version="true">
-  <link rel="stylesheet" href="~/css/modal.css" asp-append-version="true">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/hero.css">
+  <link rel="stylesheet" href="css/sections.css">
+  <link rel="stylesheet" href="css/presentes.css">
+  <link rel="stylesheet" href="css/extra-sections.css">
+  <link rel="stylesheet" href="css/modal.css">
 </head>
 <body>
 
@@ -42,7 +33,7 @@
     <div class="navbar__inner">
       <a href="#inicio" class="navbar__logo" id="nav-logo" aria-label="Ir para o início">
         <div class="navbar__logo-icon">
-          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V10.5z"/>
             <path d="M9 21V12h6v9"/>
           </svg>
@@ -64,28 +55,16 @@
 
       <!-- CTA -->
       <div style="display: flex; gap: var(--space-xs); align-items: center;">
-        <a href="@Url.Action("Presentes", "Produtos")" class="navbar__cta" id="nav-cta" aria-label="Ver catálogo completo de presentes">
+        <a href="presentes.html" class="navbar__cta" id="nav-cta" aria-label="Ver catálogo completo de presentes">
           <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M20 7H4a1 1 0 00-1 1v10a1 1 0 001 1h16a1 1 0 001-1V8a1 1 0 00-1-1z"/>
             <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>
           </svg>
           Lista de Presentes
         </a>
-        @if (adminLogado)
-        {
-            <a href="@Url.Action("Admin", "Produtos")" class="navbar__cta" id="nav-admin" title="Painel Administrativo" style="background: rgba(214, 177, 137, 0.2); border: 1.5px solid var(--color-gold); color: var(--color-gold-light); padding: 8px 10px; border-radius: 50%; min-width: 34px; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;">
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="margin: 0;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-            </a>
-            <a href="@Url.Action("Logout", "Login")" class="navbar__cta" title="Sair" style="background: rgba(201, 75, 75, 0.1); border: 1.5px solid #c94b4b; color: #c94b4b; padding: 8px 12px; border-radius: var(--radius-full); font-size: var(--fs-xs);">
-              Sair
-            </a>
-        }
-        else
-        {
-            <a href="@Url.Action("Index", "Login")" class="navbar__cta" id="nav-admin" aria-label="Painel administrativo" title="Área administrativa" style="background: rgba(255, 255, 255, 0.08); border: 1.5px solid rgba(255, 255, 255, 0.15); color: var(--color-gold-light); padding: 8px 10px; border-radius: 50%; min-width: 34px; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;">
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="margin: 0;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-            </a>
-        }
+        <a href="login.html" class="navbar__cta" id="nav-admin" aria-label="Painel administrativo" title="Área administrativa" style="background: rgba(255, 255, 255, 0.08); border: 1.5px solid rgba(255, 255, 255, 0.15); color: var(--color-gold-light); padding: 8px 10px; border-radius: 50%; min-width: 34px; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="margin: 0;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        </a>
       </div>
 
       <!-- Hamburger Button (Mobile) -->
@@ -103,23 +82,15 @@
       <a href="#historia" class="navbar__mobile-link">Sobre Nós</a>
       <a href="#como-funciona" class="navbar__mobile-link">Como funciona</a>
       <a href="#recados" class="navbar__mobile-link">Deixar recado</a>
-      @if (adminLogado)
-      {
-          <a href="@Url.Action("Admin", "Produtos")" class="navbar__mobile-link" style="color: var(--color-gold-light);">Painel Admin</a>
-          <a href="@Url.Action("Logout", "Login")" class="navbar__mobile-link" style="color: #c94b4b;">Sair</a>
-      }
-      else
-      {
-          <a href="@Url.Action("Index", "Login")" class="navbar__mobile-link" style="color: var(--color-gold-light);">Área Administrativa</a>
-      }
-      <a href="@Url.Action("Presentes", "Produtos")" class="navbar__mobile-cta">Ver todos os presentes</a>
+      <a href="login.html" class="navbar__mobile-link" style="color: var(--color-gold-light);">Área Administrativa</a>
+      <a href="presentes.html" class="navbar__mobile-cta">Ver todos os presentes</a>
     </div>
   </nav>
 
   <!-- ============ HERO (INÍCIO) ============ -->
   <section class="hero" id="inicio">
     <div class="hero__bg" aria-hidden="true">
-      <img src="~/images/backgrounds/Background-hero.png" alt="Plano de fundo Vitória e Rodrigo" class="hero__bg-img">
+      <img src="images/backgrounds/Background-hero.png" alt="Plano de fundo Vitória e Rodrigo" class="hero__bg-img">
     </div>
     <div class="hero__overlay" aria-hidden="true"></div>
     <div class="hero__glow" aria-hidden="true"></div>
@@ -137,7 +108,7 @@
           Cada detalhe foi pensado com amor, e cada presente nos aproxima ainda mais do lar que sonhamos construir juntos.
         </p>
         <div class="hero__actions">
-          <a href="@Url.Action("Presentes", "Produtos")" class="btn btn--primary" id="hero-cta-presentes">
+          <a href="presentes.html" class="btn btn--primary" id="hero-cta-presentes">
             <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2" aria-hidden="true">
               <path d="M20 7H4a1 1 0 00-1 1v10a1 1 0 001 1h16a1 1 0 001-1V8a1 1 0 00-1-1z"/>
               <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>
@@ -157,19 +128,19 @@
         <div class="hero__highlights">
           <div class="hero__highlight-card">
             <div class="hero__highlight-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>
             </div>
             <p class="hero__highlight-text">Um Novo<br>Começo</p>
           </div>
           <div class="hero__highlight-card">
             <div class="hero__highlight-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V10.5z"/><path d="M9 21V12h6v9"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V10.5z"/><path d="M9 21V12h6v9"/></svg>
             </div>
             <p class="hero__highlight-text">Um Lar<br>de Sonhos</p>
           </div>
           <div class="hero__highlight-card">
             <div class="hero__highlight-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a1 1 0 00-1 1v10a1 1 0 001 1h16a1 1 0 001-1V8a1 1 0 00-1-1z"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M20 7H4a1 1 0 00-1 1v10a1 1 0 001 1h16a1 1 0 001-1V8a1 1 0 00-1-1z"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
             </div>
             <p class="hero__highlight-text">Sua Presença<br>Faz Melhor</p>
           </div>
@@ -201,43 +172,14 @@
 
     <!-- Container do carrossel/rolagem horizontal -->
     <div class="presentes__horizontal-container">
-      <!-- Botão para rolar para a eficiência -->
+      <!-- Botão para rolar para a esquerda -->
       <button class="presentes__scroll-btn presentes__scroll-btn--left" id="scroll-left" aria-label="Rolar para esquerda">
         <svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
       </button>
 
       <!-- Trilho de rolagem contendo os cards -->
       <div class="presentes__horizontal-scroll" id="presentes-horizontal-scroll" role="list">
-        <!-- Renderizado via C#/Razor para SSR rápido -->
-        @foreach (var p in Model.Where(x => !x.Doado).Take(8))
-        {
-            <div class="presente-card card-visible" role="listitem" data-id="@p.Id">
-                <div class="presente-card__image-wrap">
-                    @if (!string.IsNullOrEmpty(p.ImagemUrl))
-                    {
-                        <img src="@p.ImagemUrl" alt="@p.Nome" loading="lazy">
-                    }
-                    else
-                    {
-                        <div class="presente-card__image-placeholder">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="13.5" r="1.5"/></svg>
-                        </div>
-                    }
-                    <div class="presente-card__status-badge">
-                        <span class="badge badge--available">Disponível</span>
-                    </div>
-                </div>
-                <div class="presente-card__body">
-                    <p class="presente-card__category">@p.Categoria</p>
-                    <h3 class="presente-card__name">@p.Nome</h3>
-                    <p class="presente-card__desc">@p.Descricao</p>
-                    <div class="presente-card__footer">
-                        <span class="presente-card__price">@p.Valor.ToString("C", cultura)</span>
-                        <button class="presente-card__btn">Presentear</button>
-                    </div>
-                </div>
-            </div>
-        }
+        <!-- Renderizado dinamicamente pelo JS -->
       </div>
 
       <!-- Botão para rolar para a direita -->
@@ -247,7 +189,7 @@
     </div>
 
     <div class="presentes__load-more reveal">
-      <a href="@Url.Action("Presentes", "Produtos")" class="btn btn--outline-gold" id="btn-ver-catalogo">
+      <a href="presentes.html" class="btn btn--outline-gold" id="btn-ver-catalogo">
         Ver catálogo completo
         <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2" aria-hidden="true">
           <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -264,19 +206,19 @@
         <div class="historia__photos reveal reveal--left">
           <div class="polaroid polaroid--1">
             <div class="polaroid__img-wrap">
-              <img src="~/images/casal/img1.jpeg" alt="Vitória e Rodrigo abraçados">
+              <img src="images/casal/img1.jpeg" alt="Vitória e Rodrigo abraçados">
             </div>
             <span class="polaroid__caption">Nossa história ♡</span>
           </div>
           <div class="polaroid polaroid--2">
             <div class="polaroid__img-wrap">
-              <img src="~/images/casal/img2.jpeg" alt="Vitória e Rodrigo sorrindo">
+              <img src="images/casal/img2.jpeg" alt="Vitória e Rodrigo sorrindo">
             </div>
             <span class="polaroid__caption">Cumplicidade</span>
           </div>
           <div class="polaroid polaroid--3">
             <div class="polaroid__img-wrap">
-              <img src="~/images/casal/img3.jpeg" alt="Vitória e Rodrigo viajando">
+              <img src="images/casal/img3.jpeg" alt="Vitória e Rodrigo viajando">
             </div>
             <span class="polaroid__caption">Próxima Parada: Nosso Lar</span>
           </div>
@@ -292,7 +234,7 @@
 
           <div class="historia__ornament">
             <div class="historia__ornament-line"></div>
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
             <div class="historia__ornament-line"></div>
           </div>
 
@@ -393,15 +335,14 @@
         <div class="recados__form-wrap reveal reveal--left">
           <h3 class="recados__form-title">Mensagem de Carinho ♡</h3>
           <p class="recados__form-subtitle">Seu recado aparecerá instantaneamente no nosso mural abaixo.</p>
-          <form class="recados-form" id="recados-form" method="POST" action="@Url.Action("EnviarRecado", "Produtos")">
-            @Html.AntiForgeryToken()
+          <form class="recados-form" id="recados-form" novalidate>
             <div class="form-group">
               <label for="recado-nome">Seu Nome *</label>
-              <input type="text" id="recado-nome" name="nome" placeholder="Como quer ser identificado?" required>
+              <input type="text" id="recado-nome" placeholder="Como quer ser identificado?" required>
             </div>
             <div class="form-group">
               <label for="recado-msg">Mensagem *</label>
-              <textarea id="recado-msg" name="mensagem" placeholder="Escreva aqui suas palavras de carinho..." required></textarea>
+              <textarea id="recado-msg" placeholder="Escreva aqui suas palavras de carinho..." required></textarea>
             </div>
             <button type="submit" class="btn btn--primary" id="btn-enviar-recado" style="width: 100%; justify-content: center;">
               Enviar Mensagem
@@ -411,27 +352,7 @@
 
         <!-- Mural de Mensagens -->
         <div class="recados__cards reveal reveal--right" id="recados-cards" aria-live="polite">
-          @if (ViewBag.Recados != null)
-          {
-              var recadosList = (List<CHA_CASA_NOVA_ADRIANA.Models.Recado>)ViewBag.Recados;
-              if (recadosList.Count == 0)
-              {
-                  <div style="text-align: center; color: rgba(255,255,255,0.6); padding: 20px;">Nenhum recado ainda. Seja o primeiro! 💛</div>
-              }
-              else
-              {
-                  foreach (var r in recadosList)
-                  {
-                      <div class="recado-card" style="opacity: 1; transform: none; transition: none;">
-                        <div class="recado-card__header">
-                          <span class="recado-card__name">@r.Nome</span>
-                          <span class="recado-card__date">@r.DataCriacao.ToString("dd MMM yyyy", cultura)</span>
-                        </div>
-                        <p class="recado-card__msg">"@r.Mensagem"</p>
-                      </div>
-                  }
-              }
-          }
+          <!-- Renderizado dinamicamente pelo JS -->
         </div>
       </div>
     </div>
@@ -455,19 +376,19 @@
         <div class="agradecimento__cards">
           <div class="agradecimento__card">
             <div class="agradecimento__card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
             </div>
             <p class="agradecimento__card-text">Presença garantida<br>no coração 🎁</p>
           </div>
           <div class="agradecimento__card">
             <div class="agradecimento__card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>
             </div>
             <p class="agradecimento__card-text">Carinho que decora<br>nosso dia a dia</p>
           </div>
           <div class="agradecimento__card">
             <div class="agradecimento__card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V10.5z"/><path d="M9 21V12h6v9"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V10.5z"/><path d="M9 21V12h6v9"/></svg>
             </div>
             <p class="agradecimento__card-text">Construção conjunta<br>deste lindo sonho</p>
           </div>
@@ -476,13 +397,67 @@
     </div>
   </section>
 
-  @await Html.PartialAsync("_SiteFooter")
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer" id="contato">
+    <div class="footer__inner">
+      <div>
+        <h3 class="footer__brand-name">Chá de Casa Nova</h3>
+        <p class="footer__brand-tagline">Vitória & Rodrigo estão unindo suas vidas e montando o primeiro lar deles com todo amor, carinho e com a sua essencial presença.</p>
+        <div class="footer__social">
+          <a href="#" class="footer__social-link" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17" cy="7" r="1" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="#" class="footer__social-link" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer__col-title">Navegação</h4>
+        <nav class="footer__links">
+          <a href="#inicio" class="footer__link">Início</a>
+          <a href="#presentes" class="footer__link">Lista de Presentes</a>
+          <a href="#historia" class="footer__link">Sobre Nós</a>
+          <a href="#como-funciona" class="footer__link">Como funciona</a>
+          <a href="#recados" class="footer__link">Deixar Recado</a>
+          <a href="login.html" class="footer__link" style="color: var(--color-gold-light); font-weight: 600;">Área Administrativa</a>
+        </nav>
+      </div>
+
+      <div>
+        <h4 class="footer__col-title">Informações</h4>
+        <div class="footer__links">
+          <span class="footer__link">📍 Maceió, AL</span>
+          <span class="footer__link">📅 27 de Junho de 2026</span>
+          <span class="footer__link">📧 contato@vitoriaerodrigo.com</span>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer__col-title">Contribuição Pix</h4>
+        <div class="footer__pix">
+          <p class="footer__pix-label">Chave Pix</p>
+          <p class="footer__pix-key">vitoriaerodrigo@email.com</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p class="footer__copyright">© 2026 Vitória & Rodrigo — Todos os direitos reservados</p>
+      <p class="footer__heart">
+        Feito com
+        <svg viewBox="0 0 24 24" width="12" height="12"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>
+        para celebrar
+      </p>
+    </div>
+  </footer>
 
   <!-- ============ MODAL DE DETALHES DO PRESENTE ============ -->
   <div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="modal" id="modal">
       <button class="modal__close" id="modal-close" aria-label="Fechar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
       </button>
       <div id="modal-content">
         <!-- Renderizado dinamicamente pelo presentes.js -->
@@ -492,33 +467,13 @@
 
   <!-- Toast de Notificações -->
   <div class="toast" id="toast" role="alert" aria-live="assertive">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+    <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
     <span id="toast-msg">Sucesso!</span>
   </div>
 
-  @Html.AntiForgeryToken()
-
-  <!-- Configurações e Injeção do Banco de Dados Dinâmico -->
-  <script>
-    // Serializando o banco de dados dinâmico de produtos vindo do C#
-    window.presentesDb = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Select(p => new {
-        id = p.Id,
-        nome = p.Nome,
-        categoria = p.Categoria ?? "outros",
-        preco = (double)p.Valor,
-        status = p.Doado ? "reservado" : "disponivel",
-        progresso = p.Doado ? 100 : 0,
-        quantidadeEscolhida = p.Doado ? 1 : 0,
-        descricao = p.Descricao,
-        textoEmocional = p.Descricao,
-        imagem = p.ImagemUrl,
-        destaque = false,
-        desejo = false
-    })));
-  </script>
-
   <!-- Scripts -->
-  <script src="~/js/main.js" asp-append-version="true"></script>
-  <script src="~/js/presentes.js" asp-append-version="true"></script>
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/presentes.js"></script>
 </body>
 </html>

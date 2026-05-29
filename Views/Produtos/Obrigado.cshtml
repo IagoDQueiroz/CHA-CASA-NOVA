@@ -1,39 +1,59 @@
 @model CHA_CASA_NOVA_ADRIANA.Models.Produto
 
 @{
-    ViewData["Title"] = "Obrigado";
+    ViewData["Title"] = "Obrigado pelo Presente! — Vitória & Rodrigo";
+    Layout = null;
+    var cultura = System.Globalization.CultureInfo.GetCultureInfo("pt-BR");
 }
 
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Obrigado - Chá de Casa Nova</title>
-<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-<link rel="icon" type="image/png" href="~/favicon.png" />
-<link rel="apple-touch-icon" href="~/favicon.png" />
-<link rel="stylesheet" href="~/css/site.css" />
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>@ViewData["Title"]</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="~/images/Icone/casa_dourada_rabisco.svg">
 
-<div class="pagina-formulario">
-    <div class="form-container obrigado-container">
-        <div class="topo-formulario">
-            <span class="login-badge">Doação confirmada</span>
-            <h1>Obrigado pelo presente</h1>
-            <p>
-                Sua contribuição para <strong>@Model.Nome</strong> foi registrada com sucesso.
-            </p>
-        </div>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Great+Vibes&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-        <div class="obrigado-card">
-            <img src="@Model.ImagemUrl" alt="@Model.Nome" />
-            <div>
-                <h2>@Model.Nome</h2>
-                <p>@Model.Descricao</p>
-            </div>
-        </div>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="~/css/variables.css" asp-append-version="true">
+  <link rel="stylesheet" href="~/css/base.css" asp-append-version="true">
+  <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true">
+</head>
+<body style="min-height: 100vh; display: flex; flex-direction: column; background: var(--color-warm-white); justify-content: center; align-items: center; padding: var(--space-xl) var(--space-md);">
 
-        <div class="acoes-formulario">
-            <a asp-action="Index" class="btn-principal">Voltar para lista</a>
-            <a asp-action="Details" asp-route-id="@Model.Id" class="btn-secundario">Ver detalhes</a>
-        </div>
+  <div class="login-card" style="max-width: 550px; width: 100%; background: #fff; border: 1.5px solid var(--color-cream-soft); color: var(--color-dark-2); padding: var(--space-2xl) var(--space-xl); text-align: center;">
+    <div class="login-card__brand" style="margin-bottom: var(--space-xl);">
+      <span class="login-card__badge" style="background: rgba(44, 156, 92, 0.1); color: #2c9c5c; border: 1px solid rgba(44, 156, 92, 0.2);">Doação Confirmada</span>
+      <h1 class="login-card__title" style="color: var(--color-gold-dark); margin-top: var(--space-sm);">Muito Obrigado! ♡</h1>
+      <p class="login-card__subtitle" style="color: rgba(40,35,35,0.7); margin-top: var(--space-xs);">
+         Sua contribuição para o presente <strong>@Model.Nome</strong> foi registrada com sucesso!
+      </p>
     </div>
-</div>
 
-@await Html.PartialAsync("_SiteFooter")
+    @if (!string.IsNullOrEmpty(Model.ImagemUrl))
+    {
+        <div style="display: flex; justify-content: center; margin-bottom: var(--space-xl);">
+            <img src="@Model.ImagemUrl" alt="@Model.Nome" style="max-height: 160px; object-fit: cover; border-radius: var(--radius-lg); border: 1.5px solid var(--color-cream-soft); box-shadow: var(--shadow-sm);" />
+        </div>
+    }
+
+    <div style="margin-bottom: var(--space-xl); font-size: var(--fs-sm); color: rgba(40,35,35,0.7); line-height: 1.6;">
+        <p>Estamos muito felizes e gratos pela sua ajuda na construção do nosso novo lar.</p>
+        <p style="margin-top: 8px;">Que Deus abençoe grandemente a sua vida!</p>
+    </div>
+
+    <div class="login-form__actions" style="justify-content: center; gap: var(--space-md);">
+      <a href="@Url.Action("Presentes", "Produtos")" class="btn btn--outline-gold" style="padding: 0.8rem 1.8rem;">Voltar para a Lista</a>
+      <a href="@Url.Action("Index", "Produtos")" class="btn btn--primary" style="padding: 0.8rem 1.8rem;">Ir para a Home</a>
+    </div>
+  </div>
+
+</body>
+</html>

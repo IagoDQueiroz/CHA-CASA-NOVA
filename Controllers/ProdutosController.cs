@@ -17,7 +17,22 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(string? busca, string? status, string? categoria, decimal? valorMaximo)
+        public IActionResult Index()
+        {
+            var produtos = _context.Produto
+                .OrderBy(p => p.Doado)
+                .ThenBy(p => p.Nome)
+                .ToList();
+
+            ViewBag.Recados = _context.Recado
+                .OrderByDescending(r => r.DataCriacao)
+                .ToList();
+
+            return View(produtos);
+        }
+
+        [HttpGet]
+        public IActionResult Presentes(string? busca, string? status, string? categoria, decimal? valorMaximo)
         {
             var produtosQuery = _context.Produto.AsQueryable();
 
@@ -79,6 +94,10 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
             ViewBag.Doados = produtos.Count(p => p.Doado);
             ViewBag.Disponiveis = produtos.Count(p => !p.Doado);
             ViewBag.ValorTotal = produtos.Sum(p => p.Valor);
+
+            ViewBag.Recados = _context.Recado
+                .OrderByDescending(r => r.DataCriacao)
+                .ToList();
 
             return View(produtos);
         }
@@ -351,6 +370,48 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
 
             return Uri.TryCreate(url, UriKind.Absolute, out var uri) &&
                    uri.Scheme == Uri.UriSchemeHttps;
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EnviarRecado(string nome, string mensagem)
+        {
+            nome = (nome ?? "").Trim();
+            mensagem = (mensagem ?? "").Trim();
+
+            if (string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(mensagem))
+            {
+                TempData["MensagemErro"] = "Preencha o nome e a mensagem.";
+                return RedirectToAction("Index", "Produtos", null, fragment: "recados");
+            }
+
+            var recado = new Recado
+            {
+                Nome = nome,
+                Mensagem = mensagem,
+                DataCriacao = DateTime.Now
+            };
+
+            _context.Recado.Add(recado);
+            _context.SaveChanges();
+
+            TempData["MensagemSucesso"] = "Mensagem enviada com carinho! 💛";
+            return RedirectToAction("Index", "Produtos", null, fragment: "recados");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AdminRequired]
+        public IActionResult ExcluirRecado(int id)
+        {
+            var recado = _context.Recado.Find(id);
+            if (recado != null)
+            {
+                _context.Recado.Remove(recado);
+                _context.SaveChanges();
+                TempData["MensagemSucesso"] = "Recado excluído com sucesso.";
+            }
+            return RedirectToAction("Admin");
         }
     }
 }

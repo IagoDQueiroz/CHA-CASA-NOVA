@@ -1,63 +1,63 @@
-﻿@model CHA_CASA_NOVA_ADRIANA.Models.Produto
+@model CHA_CASA_NOVA_ADRIANA.Models.Produto
 
 @{
-    ViewData["Title"] = "Excluir Produto";
+    ViewData["Title"] = "Excluir Presente — Vitória & Rodrigo";
+    Layout = null;
     var cultura = System.Globalization.CultureInfo.GetCultureInfo("pt-BR");
 }
 
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Excluir Produto - Chá de Casa Nova</title>
-<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-<link rel="icon" type="image/png" href="~/favicon.png" />
-<link rel="apple-touch-icon" href="~/favicon.png" />
-<link rel="stylesheet" href="~/css/site.css" />
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>@ViewData["Title"]</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="~/images/Icone/casa_dourada_rabisco.svg">
 
-<div class="pagina-formulario">
-    <div class="form-container">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-        <div class="topo-formulario">
-            <h1>Excluir Produto</h1>
-            <p>Tem certeza que deseja remover este item da lista?</p>
-        </div>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="~/css/variables.css" asp-append-version="true">
+  <link rel="stylesheet" href="~/css/base.css" asp-append-version="true">
+  <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true">
+</head>
+<body style="min-height: 100vh; display: flex; flex-direction: column; background: var(--color-warm-white); justify-content: center; align-items: center; padding: var(--space-xl) var(--space-md);">
 
-        <div class="card-preview-delete">
-            <img src="@Model.ImagemUrl" alt="@Model.Nome" class="imagem-preview-delete" />
-
-            <div class="preview-delete-info">
-                <h3>@Model.Nome</h3>
-                <p>@Model.Descricao</p>
-                <p><strong>Valor:</strong> @Model.Valor.ToString("C", cultura)</p>
-                <p><strong>Quantidade:</strong> @Model.Quantidade</p>
-
-                @if (Model.Doado)
-                {
-                    <p><strong>Status:</strong> Já doado</p>
-                }
-                else
-                {
-                    <p><strong>Status:</strong> Disponível</p>
-                }
-
-                @if (!string.IsNullOrEmpty(Model.Doador))
-                {
-                    <p><strong>Doador:</strong> @Model.Doador</p>
-                }
-            </div>
-        </div>
-
-        <form asp-action="Delete" method="post" class="acoes-formulario">
-            <input type="hidden" asp-for="Id" />
-
-            <button type="submit" class="btn-excluir">
-                Confirmar Exclusão
-            </button>
-
-            <a asp-action="Index" class="btn-secundario">
-                Cancelar
-            </a>
-        </form>
-
+  <div class="login-card" style="max-width: 500px; width: 100%; background: #fff; border: 1.5px solid var(--color-cream-soft); color: var(--color-dark-2); padding: var(--space-2xl) var(--space-xl);">
+    <div class="login-card__brand" style="margin-bottom: var(--space-xl);">
+      <span class="login-card__badge" style="background: rgba(201, 75, 75, 0.1); color: #c94b4b; border: 1px solid rgba(201, 75, 75, 0.2);">Atenção</span>
+      <h1 class="login-card__title" style="color: #c94b4b;">Excluir Presente</h1>
+      <p class="login-card__subtitle">Tem certeza que deseja remover este item da lista de presentes?</p>
     </div>
-</div>
 
-@await Html.PartialAsync("_SiteFooter")
+    <div style="display: flex; gap: 16px; border: 1px solid var(--color-cream-soft); padding: 16px; border-radius: var(--radius-lg); margin-bottom: var(--space-xl); align-items: center; background: var(--color-warm-white);">
+      @if (!string.IsNullOrEmpty(Model.ImagemUrl))
+      {
+          <img src="@Model.ImagemUrl" alt="@Model.Nome" style="width: 80px; height: 80px; object-fit: cover; border-radius: var(--radius-md); border: 1px solid var(--color-cream-soft);" />
+      }
+      <div>
+          <h3 style="font-size: var(--fs-md); font-weight: 700; margin-bottom: 4px;">@Model.Nome</h3>
+          <p style="font-size: var(--fs-sm); font-weight: 700; color: var(--color-gold-dark);">@Model.Valor.ToString("C", cultura)</p>
+          <p style="font-size: var(--fs-xs); color: rgba(40,35,35,0.6); margin-top: 4px;">@Model.Descricao</p>
+      </div>
+    </div>
+
+    <form asp-action="Delete" method="post" style="display: flex; gap: var(--space-md); justify-content: flex-end;">
+      @Html.AntiForgeryToken()
+      <input type="hidden" asp-for="Id" />
+      
+      <a href="@Url.Action("Admin")" class="btn btn--outline-gold" style="padding: 0.8rem 1.8rem;">Cancelar</a>
+      <button type="submit" class="btn" style="background: #c94b4b; color: #fff; border: none; padding: 0.8rem 1.8rem; border-radius: var(--radius-full); font-weight: 600; cursor: pointer; transition: background 0.25s ease;">
+          Excluir
+      </button>
+    </form>
+  </div>
+
+</body>
+</html>

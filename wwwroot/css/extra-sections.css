@@ -1,0 +1,234 @@
+/* ============================================
+   SEÇÕES EXTRAS (Recados, Agradecimento)
+   ============================================ */
+
+/* ============================================
+   RECADOS DOS CONVIDADOS
+   ============================================ */
+.recados {
+  background-color: var(--color-warm-white);
+}
+
+.recados__inner {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: var(--space-3xl);
+  max-width: var(--container-lg);
+  margin: 0 auto;
+}
+
+.recados__form-wrap {
+  background: #fff;
+  border: 1px solid var(--color-cream-soft);
+  border-radius: var(--radius-xl);
+  padding: var(--space-2xl) var(--space-xl);
+  box-shadow: var(--shadow-sm);
+  height: fit-content;
+}
+
+.recados__form-title {
+  font-size: var(--fs-xl);
+  font-weight: 500;
+  margin-bottom: var(--space-xs);
+  color: var(--color-dark-2);
+}
+
+.recados__form-subtitle {
+  font-size: var(--fs-xs);
+  color: rgba(40, 35, 35, 0.6);
+  margin-bottom: var(--space-xl);
+}
+
+.recados-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+/* Lista de Recados */
+.recados__cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  max-height: 480px;
+  overflow-y: auto;
+  padding-right: var(--space-sm);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(159, 111, 79, 0.2) transparent;
+}
+
+.recado-card {
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid var(--color-cream-soft);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md) var(--space-lg);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+.recado-card:hover {
+  transform: translateY(-2px);
+  background: #fff;
+  border-color: var(--color-gold-light);
+  box-shadow: var(--shadow-md);
+}
+
+.recado-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-xs);
+}
+
+.recado-card__name {
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  color: var(--color-dark-2);
+}
+
+.recado-card__date {
+  font-size: 10px;
+  color: rgba(40, 35, 35, 0.4);
+}
+
+.recado-card__msg {
+  font-size: var(--fs-sm);
+  color: rgba(40, 35, 35, 0.7);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+@media (max-width: 860px) {
+  .recados__inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+  .recados__cards {
+    max-height: 380px;
+  }
+}
+
+/* ============================================
+   AGRADECIMENTO FINAL
+   ============================================ */
+.agradecimento {
+  position: relative;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4xl) 0;
+  overflow: hidden;
+  background: var(--color-dark-1);
+}
+
+.agradecimento__bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(13, 11, 11, 0.8), rgba(13, 11, 11, 0.85)),
+              url('../images/backgrounds/Background-agradecimento.png') center/cover no-repeat;
+  z-index: 0;
+  filter: grayscale(20%);
+}
+
+.agradecimento__content {
+  position: relative;
+  z-index: 1;
+  max-width: var(--container-md);
+  text-align: center;
+  color: #fff;
+  padding: 0 var(--space-md);
+}
+
+.agradecimento__title {
+  font-size: var(--fs-3xl);
+  color: #fff;
+  margin-bottom: var(--space-md);
+}
+
+.agradecimento__title span {
+  font-family: var(--font-signature);
+  font-size: var(--fs-5xl);
+  color: var(--color-gold-light);
+  line-height: 1;
+  display: inline-block;
+  transform: rotate(-3deg) translateY(6px);
+}
+
+.agradecimento__text {
+  font-size: var(--fs-md);
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.8;
+  max-width: 600px;
+  margin: 0 auto var(--space-2xl);
+}
+
+.agradecimento__sig {
+  font-family: var(--font-signature);
+  font-size: var(--fs-4xl);
+  color: var(--color-gold-light);
+  display: block;
+  margin-bottom: var(--space-3xl);
+}
+
+/* Cards de Gratidão */
+.agradecimento__cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.agradecimento__card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md) var(--space-sm);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.agradecimento__card-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(216, 177, 137, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-sm);
+  color: var(--color-gold-light);
+}
+
+.agradecimento__card-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+.agradecimento__card-text {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .agradecimento__title {
+    font-size: var(--fs-2xl);
+  }
+  .agradecimento__title span {
+    font-size: var(--fs-4xl);
+  }
+  .agradecimento__cards {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+    max-width: 300px;
+  }
+}

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,5 +15,6 @@ namespace CHA_CASA_NOVA_ADRIANA.Data
         }
 
         public DbSet<CHA_CASA_NOVA_ADRIANA.Models.Produto> Produto { get; set; } = default!;
+        public DbSet<CHA_CASA_NOVA_ADRIANA.Models.Recado> Recado { get; set; } = default!;
     }
 }

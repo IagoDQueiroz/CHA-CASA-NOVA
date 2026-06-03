@@ -124,7 +124,16 @@ function initRecados() {
       });
 
       if (!response.ok) {
-        throw new Error('Erro na rede');
+        const errText = await response.text();
+        console.error('Erro na resposta do servidor:', response.status, errText);
+        throw new Error(`Erro do servidor (${response.status})`);
+      }
+
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        const rawText = await response.text();
+        console.error('Resposta não-JSON do servidor:', rawText);
+        throw new Error('Resposta inválida do servidor.');
       }
 
       const result = await response.json();
@@ -167,7 +176,7 @@ function initRecados() {
       }
     } catch (error) {
       console.error(error);
-      alert('Ocorreu um erro ao enviar seu recado. Por favor, tente novamente.');
+      alert(`Ocorreu um erro ao enviar seu recado (${error.message}). Por favor, tente novamente.`);
     } finally {
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalText;
@@ -200,4 +209,94 @@ function escapeHtml(unsafe) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
+}
+
+// ============================================
+// CONEXÃO SIGNALR EM TEMPO REAL (REAL-TIME WS)
+// ============================================
+if (typeof signalR !== 'undefined') {
+  const connection = new signalR.HubConnectionBuilder()
+    .withUrl("/notificationHub")
+    .withAutomaticReconnect()
+    .build();
+
+  // Recebe recado novo em tempo real de outros navegadores
+  connection.on("NovoRecado", (recado) => {
+    const cardsContainer = document.getElementById('recados-cards');
+    if (!cardsContainer) return;
+
+    // Remove mensagem "Nenhum recado ainda" se existir
+    const emptyMsg = cardsContainer.querySelector('div[style*="text-align: center"]');
+    if (emptyMsg) {
+      emptyMsg.remove();
+    }
+
+    const card = document.createElement('div');
+    card.className = 'recado-card';
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(10px)';
+    card.style.transition = 'all 0.4s ease';
+
+    card.innerHTML = `
+      <div class="recado-card__header">
+        <span class="recado-card__name">${escapeHtml(recado.nome)}</span>
+        <span class="recado-card__date">${escapeHtml(recado.data)}</span>
+      </div>
+      <p class="recado-card__msg">"${escapeHtml(recado.mensagem)}"</p>
+    `;
+
+    cardsContainer.insertBefore(card, cardsContainer.firstChild);
+
+    card.offsetHeight; // Forçar reflow
+    card.style.opacity = '1';
+    card.style.transform = 'none';
+  });
+
+  // Recebe atualização de status de produtos em tempo real
+  connection.on("NovoStatusProduto", (data) => {
+    // 1. Atualizar banco de dados local da memória da página (se existir)
+    if (window.presentesDb) {
+      const pIndex = window.presentesDb.findIndex(item => item.id === data.id);
+      if (pIndex !== -1) {
+        window.presentesDb[pIndex].status = data.status;
+        window.presentesDb[pIndex].progresso = data.status === 'reservado' ? 100 : 0;
+        window.presentesDb[pIndex].quantidadeEscolhida = data.status === 'reservado' ? 1 : 0;
+      }
+    }
+
+    // 2. Atualizar cards correspondentes no DOM (Mural principal e Catálogo completo)
+    const cards = document.querySelectorAll(`.presente-card[data-id="${data.id}"], [data-id="${data.id}"]`);
+    cards.forEach(card => {
+      const badgeWrap = card.querySelector('.presente-card__status-badge');
+      const footer = card.querySelector('.presente-card__footer');
+
+      if (data.status === 'reservado') {
+        // Altera badge
+        if (badgeWrap) {
+          badgeWrap.innerHTML = `<span class="badge badge--reserved">Escolhido 💛</span>`;
+        }
+        // Altera botão
+        if (footer) {
+          const priceSpan = footer.querySelector('.presente-card__price')?.outerHTML || '';
+          footer.innerHTML = `${priceSpan}<button class="presente-card__btn presente-card__btn--reserved" disabled aria-disabled="true">Reservado</button>`;
+        }
+      } else {
+        // Altera badge
+        if (badgeWrap) {
+          badgeWrap.innerHTML = `<span class="badge badge--available">Disponível</span>`;
+        }
+        // Altera botão
+        if (footer) {
+          const priceSpan = footer.querySelector('.presente-card__price')?.outerHTML || '';
+          footer.innerHTML = `${priceSpan}<button class="presente-card__btn">Presentear</button>`;
+        }
+      }
+    });
+  });
+
+  connection.start().then(() => {
+    console.log("Conectado ao SignalR Hub de Notificações! 🚀");
+  }).catch(err => {
+    console.error("Erro ao estabelecer conexão SignalR:", err);
+  });
 }

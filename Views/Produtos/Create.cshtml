@@ -58,7 +58,7 @@
       <div class="linha-dupla">
         <div class="form-group">
           <label asp-for="Valor">Preço (R$) *</label>
-          <input asp-for="Valor" type="text" required placeholder="Ex: 549,90" style="background: rgba(13, 11, 11, 0.02); border: 1.5px solid var(--color-cream-soft); border-radius: var(--radius-md); padding: 12px; color: var(--color-dark-2); width: 100%;" />
+          <input asp-for="Valor" type="text" value="@(editando ? Model?.Valor.ToString("F2", cultura) : "")" required placeholder="Ex: 549,90" style="background: rgba(13, 11, 11, 0.02); border: 1.5px solid var(--color-cream-soft); border-radius: var(--radius-md); padding: 12px; color: var(--color-dark-2); width: 100%;" />
           <span asp-validation-for="Valor" style="color: #c94b4b; font-size: var(--fs-xs);"></span>
         </div>
         <div class="form-group">

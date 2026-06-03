@@ -18,6 +18,7 @@ builder.Services.AddDbContext<CHA_CASA_NOVA_ADRIANAContext>(options =>
 });
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddSignalR();
 
 builder.Services.AddMemoryCache();
 builder.Services.AddDistributedMemoryCache();
@@ -57,12 +58,22 @@ app.Use(async (context, next) =>
     await next();
 });
 
+var supportedCultures = new[] { "pt-BR" };
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture(supportedCultures[0])
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+
+app.UseRequestLocalization(localizationOptions);
+
 app.UseRouting();
 
 app.UseSession();
 app.UseAuthorization();
 
 app.MapStaticAssets();
+
+app.MapHub<CHA_CASA_NOVA_ADRIANA.Hubs.NotificationHub>("/notificationHub");
 
 app.MapControllerRoute(
     name: "default",

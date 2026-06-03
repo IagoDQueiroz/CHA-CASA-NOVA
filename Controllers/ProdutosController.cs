@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using CHA_CASA_NOVA_ADRIANA.Data;
 using CHA_CASA_NOVA_ADRIANA.Filters;
 using CHA_CASA_NOVA_ADRIANA.Models;
+using Microsoft.AspNetCore.SignalR;
 using System.Net.Mail;
 
 namespace CHA_CASA_NOVA_ADRIANA.Controllers
@@ -10,10 +11,12 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
     public class ProdutosController : Controller
     {
         private readonly CHA_CASA_NOVA_ADRIANAContext _context;
+        private readonly Microsoft.AspNetCore.SignalR.IHubContext<Hubs.NotificationHub> _hubContext;
 
-        public ProdutosController(CHA_CASA_NOVA_ADRIANAContext context)
+        public ProdutosController(CHA_CASA_NOVA_ADRIANAContext context, Microsoft.AspNetCore.SignalR.IHubContext<Hubs.NotificationHub> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
         }
 
         [HttpGet]
@@ -241,7 +244,7 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Doar(int id, string nome, string telefone, string? email, string formaEntrega)
+        public async Task<IActionResult> Doar(int id, string nome, string telefone, string? email, string formaEntrega)
         {
             var produto = _context.Produto.Find(id);
 
@@ -291,7 +294,15 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
                 produto.DataDoacao = DateTime.Now;
 
                 _context.Produto.Update(produto);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
+
+                // Notifica em tempo real a reserva do produto
+                await _hubContext.Clients.All.SendAsync("NovoStatusProduto", new
+                {
+                    id = produto.Id,
+                    status = "reservado",
+                    doador = produto.Doador
+                });
 
                 TempData["MensagemSucesso"] = "Doação registrada com sucesso!";
                 return RedirectToAction("Obrigado", new { id });
@@ -319,7 +330,7 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdminRequired]
-        public IActionResult DesfazerDoacao(int id)
+        public async Task<IActionResult> DesfazerDoacao(int id)
         {
             var produto = _context.Produto.Find(id);
 
@@ -336,7 +347,15 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
             produto.DataDoacao = null;
 
             _context.Produto.Update(produto);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+
+            // Notifica em tempo real que o produto voltou a ficar disponível
+            await _hubContext.Clients.All.SendAsync("NovoStatusProduto", new
+            {
+                id = produto.Id,
+                status = "disponivel",
+                doador = (string?)null
+            });
 
             TempData["MensagemSucesso"] = "Doação desfeita com sucesso.";
             return RedirectToAction("Admin");
@@ -386,7 +405,7 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EnviarRecado(string nome, string mensagem)
+        public async Task<IActionResult> EnviarRecado(string nome, string mensagem)
         {
             nome = (nome ?? "").Trim();
             mensagem = (mensagem ?? "").Trim();
@@ -406,9 +425,18 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
                 };
 
                 _context.Recado.Add(recado);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
                 var cultura = System.Globalization.CultureInfo.GetCultureInfo("pt-BR");
+                
+                // Dispara o comentário em tempo real para todas as conexões ativas
+                await _hubContext.Clients.All.SendAsync("NovoRecado", new
+                {
+                    nome = recado.Nome,
+                    mensagem = recado.Mensagem,
+                    data = recado.DataCriacao.ToString("dd MMM yyyy", cultura)
+                });
+
                 return Json(new { 
                     success = true, 
                     nome = recado.Nome, 

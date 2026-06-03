@@ -8,10 +8,10 @@ const CONFIG = {
   nomeB: "Rodrigo",
   dataEvento: "27 de junho de 2026",
   localEvento: "Maceió, Alagoas",
-  pixKey: "vitoriaerodrigo@email.com",
-  whatsapp: "5582999990000",
+  pixKey: "Adrianavitoria737@gmail.com",
+  whatsapp: "5582988434899",
   instagram: "@vitoriaerodrigo",
-  endereco: "Rua das Palmeiras, 789 – Ponta Verde, Maceió, AL",
+  endereco: "Rua Jacinto Peixota, 49, Goiania, CEP 74523290",
   itemsPerPage: 8,
 };
 
@@ -117,20 +117,20 @@ function renderPresentesHorizontal() {
   const container = document.getElementById('presentes-horizontal-scroll');
   if (!container) return;
 
-  // Mostra apenas itens destacados ou desejados que ainda não estão reservados
-  let items = presentesDb.filter(p => p.status !== 'reservado');
+  // Exibe todos os itens
+  let items = [...presentesDb];
   
-  // Fallback: se todos foram escolhidos, mostra todos
-  if (items.length === 0) {
-    items = [...presentesDb];
-  }
-
-  // Ordena destaque primeiro
-  items.sort((a, b) => (b.destaque ? 1 : 0) - (a.destaque ? 1 : 0));
+  // Ordena itens disponíveis primeiro, e depois pelos destaques
+  items.sort((a, b) => {
+    const statusOrderA = a.status === 'reservado' ? 1 : 0;
+    const statusOrderB = b.status === 'reservado' ? 1 : 0;
+    if (statusOrderA !== statusOrderB) return statusOrderA - statusOrderB;
+    return (b.destaque ? 1 : 0) - (a.destaque ? 1 : 0);
+  });
 
   container.innerHTML = '';
 
-  items.slice(0, 8).forEach((p, i) => {
+  items.slice(0, 24).forEach((p, i) => {
     const card = createPresenteCard(p, i);
     container.appendChild(card);
   });

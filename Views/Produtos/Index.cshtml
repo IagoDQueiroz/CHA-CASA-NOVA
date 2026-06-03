@@ -214,7 +214,7 @@
       <!-- Trilho de rolagem contendo os cards -->
       <div class="presentes__horizontal-scroll" id="presentes-horizontal-scroll" role="list">
         <!-- Renderizado via C#/Razor para SSR rápido -->
-        @foreach (var p in Model.Where(x => !x.Doado).Take(8))
+        @foreach (var p in Model.Take(24))
         {
             <div class="presente-card card-visible" role="listitem" data-id="@p.Id">
                 <div class="presente-card__image-wrap">
@@ -229,7 +229,14 @@
                         </div>
                     }
                     <div class="presente-card__status-badge">
-                        <span class="badge badge--available">Disponível</span>
+                        @if (p.Doado)
+                        {
+                            <span class="badge badge--reserved">Escolhido 💛</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge--available">Disponível</span>
+                        }
                     </div>
                 </div>
                 <div class="presente-card__body">
@@ -238,7 +245,14 @@
                     <p class="presente-card__desc">@p.Descricao</p>
                     <div class="presente-card__footer">
                         <span class="presente-card__price">@p.Valor.ToString("C", cultura)</span>
-                        <button class="presente-card__btn">Presentear</button>
+                        @if (p.Doado)
+                        {
+                            <button class="presente-card__btn presente-card__btn--reserved" disabled aria-disabled="true">Reservado</button>
+                        }
+                        else
+                        {
+                            <button class="presente-card__btn">Presentear</button>
+                        }
                     </div>
                 </div>
             </div>
@@ -523,6 +537,7 @@
   </script>
 
   <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
   <script src="~/js/main.js" asp-append-version="true"></script>
   <script src="~/js/presentes.js" asp-append-version="true"></script>
   <script>

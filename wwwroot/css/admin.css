@@ -19,18 +19,17 @@
 .login-page__bg {
   position: absolute;
   inset: 0;
-  background: url('../images/backgrounds/Background-hero.png') center/cover no-repeat;
+  background: #0d0b0b;
   z-index: 0;
-  filter: blur(4px) grayscale(10%);
 }
 
 .login-page__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(13, 11, 11, 0.9) 0%,
-    rgba(13, 11, 11, 0.85) 100%
+  background: radial-gradient(
+    circle,
+    rgba(20, 18, 18, 0.8) 0%,
+    rgba(0, 0, 0, 1) 100%
   );
   z-index: 1;
 }

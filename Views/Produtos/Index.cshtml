@@ -1,7 +1,7 @@
 @model List<CHA_CASA_NOVA_ADRIANA.Models.Produto>
 
 @{
-    ViewData["Title"] = "Chá de Casa Nova — Vitória & Rodrigo";
+    ViewData["Title"] = "Chá de Casa Nova — Noiva & Noivo";
     Layout = null;
     var adminLogado = Context.Session.GetString("AdminLogado") == "true";
     var cultura = System.Globalization.CultureInfo.GetCultureInfo("pt-BR");
@@ -12,7 +12,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Chá de Casa Nova — Vitória & Rodrigo. Participe da construção do nosso novo lar escolhendo um presente e deixando um recado especial!">
+  <meta name="description" content="Chá de Casa Nova — Noiva & Noivo. Participe da construção do nosso novo lar escolhendo um presente e deixando um recado especial!">
   <meta name="robots" content="index, follow">
   
   <title>@ViewData["Title"]</title>
@@ -51,7 +51,7 @@
         </div>
         <div class="navbar__logo-text">
           <span class="navbar__logo-main">Chá de Casa Nova</span>
-          <span class="navbar__logo-sub">Vitória & Rodrigo</span>
+          <span class="navbar__logo-sub">Noiva & Noivo</span>
         </div>
       </a>
 
@@ -123,7 +123,7 @@
     <div class="hero__bg" aria-hidden="true">
       <picture>
         <source media="(max-width: 768px)" srcset="@Url.Content("~/images/backgrounds/Background-hero-mobile.jpg")">
-        <img src="~/images/backgrounds/Background-hero.png" alt="Plano de fundo Vitória e Rodrigo" class="hero__bg-img">
+        <img src="~/images/backgrounds/Background-hero.png" alt="Plano de fundo" class="hero__bg-img">
       </picture>
     </div>
     <div class="hero__overlay" aria-hidden="true"></div>
@@ -183,7 +183,7 @@
 
       <!-- Assinatura do casal à direita inferior -->
       <div class="hero__signature-area reveal">
-        <span class="hero__signature-text">Vitória & Rodrigo</span>
+        <span class="hero__signature-text">Noiva & Noivo</span>
         <span class="hero__signature-date">27 de Junho de 2026</span>
       </div>
     </div>
@@ -283,19 +283,19 @@
         <div class="historia__photos reveal reveal--left">
           <div class="polaroid polaroid--1">
             <div class="polaroid__img-wrap">
-              <img src="~/images/casal/img1.jpeg" alt="Vitória e Rodrigo abraçados">
+              <img src="~/images/casal/img1.jpeg" alt="Casal">
             </div>
             <span class="polaroid__caption">Nossa história ♡</span>
           </div>
           <div class="polaroid polaroid--2">
             <div class="polaroid__img-wrap">
-              <img src="~/images/casal/img2.jpeg" alt="Vitória e Rodrigo sorrindo">
+              <img src="~/images/casal/img2.jpeg" alt="Casal">
             </div>
             <span class="polaroid__caption">Cumplicidade</span>
           </div>
           <div class="polaroid polaroid--3">
             <div class="polaroid__img-wrap">
-              <img src="~/images/casal/img3.jpeg" alt="Vitória e Rodrigo viajando">
+              <img src="~/images/casal/img3.jpeg" alt="Casal">
             </div>
             <span class="polaroid__caption">Próxima Parada: Nosso Lar</span>
           </div>
@@ -324,7 +324,7 @@
 
           <div class="historia__signature-wrap">
             <div class="historia__signature-line"></div>
-            <span class="historia__signature" id="historia-signature">Vitória & Rodrigo</span>
+            <span class="historia__signature" id="historia-signature">Noiva & Noivo</span>
           </div>
         </div>
       </div>
@@ -468,7 +468,7 @@
         <p class="agradecimento__text">
           Sua amizade, presença e energia positiva são os presentes mais valiosos que poderíamos receber nesta nova jornada. Cada gesto de carinho nos ajuda a moldar o lar dos nossos sonhos.
         </p>
-        <span class="agradecimento__sig">Vitória & Rodrigo</span>
+        <span class="agradecimento__sig">Noiva & Noivo</span>
 
         <!-- Cards de destaque no agradecimento -->
         <div class="agradecimento__cards">

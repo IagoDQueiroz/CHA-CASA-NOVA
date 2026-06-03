@@ -3,15 +3,15 @@
  */
 
 const CONFIG = {
-  nomes: "Vitória & Rodrigo",
-  nomeA: "Vitória",
-  nomeB: "Rodrigo",
+  nomes: "Noiva & Noivo",
+  nomeA: "Noiva",
+  nomeB: "Noivo",
   dataEvento: "27 de junho de 2026",
-  localEvento: "Maceió, Alagoas",
-  pixKey: "Adrianavitoria737@gmail.com",
-  whatsapp: "5582988434899",
-  instagram: "@vitoriaerodrigo",
-  endereco: "Rua Jacinto Peixota, 49, Goiania, CEP 74523290",
+  localEvento: "Cidade, Estado",
+  pixKey: "sua-chave-pix@email.com",
+  whatsapp: "5582999999999",
+  instagram: "@seu-instagram",
+  endereco: "Rua Exemplo, 123, Bairro, Cidade - UF, CEP 00000-000",
   itemsPerPage: 8,
 };
 

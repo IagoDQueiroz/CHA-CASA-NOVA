@@ -43,10 +43,10 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
             var senhaInformada = (senha ?? string.Empty).Trim();
 
             // Variáveis de ambiente configuradas no servidor com fallbacks para testes locais
-            var senhaAdriana = _configuration["ADMIN_PASSWORD_ADRIANA"] ?? "adriana123";
+            var senhaAdmin = _configuration["ADMIN_PASSWORD"] ?? "admin123";
             var senhaWithCode = _configuration["ADM_PASSWORD_WITHCODE"] ?? "withcode123";
 
-            if (senhaInformada == senhaAdriana || senhaInformada == senhaWithCode)
+            if (senhaInformada == senhaAdmin || senhaInformada == senhaWithCode)
             {
                 HttpContext.Session.SetString("AdminLogado", "true");
                 HttpContext.Session.SetString("AdminFingerprint", AdminSecurity.BuildDeviceFingerprint(HttpContext));

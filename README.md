@@ -1,4 +1,4 @@
-# 🏠 Chá de Casa Nova — Vitória & Rodrigo
+# 🏠 Chá de Casa Nova — Noiva & Noivo
 
 > Uma aplicação web premium, elegante e moderna desenvolvida em **ASP.NET Core MVC** para gerenciar listas de presentes e interação de convidados em eventos especiais.
 
@@ -42,8 +42,8 @@ Para o funcionamento correto do site em produção e desenvolvimento, defina as 
 * **Descrição**: String de conexão padrão do seu banco de dados MySQL.
 
 ### 2. Credenciais de Login
-* **Chave**: `ADMIN_PASSWORD_ADRIANA`
-  * *Descrição*: Senha mestra de acesso da Adriana (noiva/cliente).
+* **Chave**: `ADMIN_PASSWORD`
+  * *Descrição*: Senha mestra de acesso da noiva/cliente.
 * **Chave**: `ADM_PASSWORD_WITHCODE`
   * *Descrição*: Senha de suporte administrativo da equipe de desenvolvimento.
 
@@ -60,11 +60,11 @@ Para o funcionamento correto do site em produção e desenvolvimento, defina as 
 2. **Configurar Segredos Locais**:
    Adicione as senhas e a string de conexão no arquivo local `appsettings.json` ou use o comando `dotnet user-secrets`:
    ```bash
-   dotnet user-secrets set "ConnectionStrings:CHA_CASA_NOVA_ADRIANAContext" "server=seu_servidor;database=seu_banco;user=usuario;password=senha"
-   dotnet user-secrets set "ADMIN_PASSWORD_ADRIANA" "sua_senha_adriana"
-   dotnet user-secrets set "ADM_PASSWORD_WITHCODE" "sua_senha_suporte"
-   ```
-   *Nota: Caso as variáveis de ambiente locais estejam vazias, o sistema utilizará as senhas de fallback padrão (`adriana123` e `withcode123`) para facilitar a depuração.*
+    dotnet user-secrets set "ConnectionStrings:CHA_CASA_NOVA_ADRIANAContext" "server=seu_servidor;database=seu_banco;user=usuario;password=senha"
+    dotnet user-secrets set "ADMIN_PASSWORD" "sua_senha_noiva"
+    dotnet user-secrets set "ADM_PASSWORD_WITHCODE" "sua_senha_suporte"
+    ```
+    *Nota: Caso as variáveis de ambiente locais estejam vazias, o sistema utilizará as senhas de fallback padrão (`admin123` e `withcode123`) para facilitar a depuração.*
 
 3. **Restaurar e Rodar a Aplicação**:
    ```bash
@@ -83,7 +83,7 @@ Para empacotar a aplicação para o seu servidor IIS / SmarterASP.NET:
 dotnet publish -c Release -o ./publish
 ```
 
-*Importante: Lembre-se de criar e registrar as variáveis `ConnectionStrings:CHA_CASA_NOVA_ADRIANAContext`, `ADMIN_PASSWORD_ADRIANA` e `ADM_PASSWORD_WITHCODE` no painel de controle da sua hospedagem antes de iniciar o pool de aplicativos.*
+*Importante: Lembre-se de criar e registrar as variáveis `ConnectionStrings:CHA_CASA_NOVA_ADRIANAContext`, `ADMIN_PASSWORD` e `ADM_PASSWORD_WITHCODE` no painel de controle da sua hospedagem antes de iniciar o pool de aplicativos.*
 
 ---
 

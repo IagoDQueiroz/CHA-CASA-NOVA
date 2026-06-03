@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace CHA_CASA_NOVA_ADRIANA.Models
 {
@@ -48,5 +48,8 @@ namespace CHA_CASA_NOVA_ADRIANA.Models
 
         [StringLength(50)]
         public string? FormaEntrega { get; set; }
+
+        [Display(Name = "Data da Doação")]
+        public DateTime? DataDoacao { get; set; }
     }
 }

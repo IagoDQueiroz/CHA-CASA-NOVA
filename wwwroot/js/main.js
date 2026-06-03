@@ -100,7 +100,79 @@ function initRevealOnScroll() {
 // GESTÃO DE RECADOS (LocalStorage)
 // ============================================
 function initRecados() {
-  // O mural de recados agora é gerenciado inteiramente pelo servidor (banco de dados)
+  const form = document.getElementById('recados-form');
+  const cardsContainer = document.getElementById('recados-cards');
+  if (!form || !cardsContainer) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const submitBtn = document.getElementById('btn-enviar-recado');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = 'Enviando...';
+
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro na rede');
+      }
+
+      const result = await response.json();
+
+      if (result.success) {
+        // Remover a mensagem de lista vazia se ela existir
+        const emptyMsg = cardsContainer.querySelector('div[style*="text-align: center"]');
+        if (emptyMsg) {
+          emptyMsg.remove();
+        }
+
+        // Criar o novo card de comentário
+        const card = document.createElement('div');
+        card.className = 'recado-card';
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(10px)';
+        card.style.transition = 'all 0.4s ease';
+
+        card.innerHTML = `
+          <div class="recado-card__header">
+            <span class="recado-card__name">${escapeHtml(result.nome)}</span>
+            <span class="recado-card__date">${escapeHtml(result.data)}</span>
+          </div>
+          <p class="recado-card__msg">"${escapeHtml(result.mensagem)}"</p>
+        `;
+
+        // Inserir no início do mural (prepend)
+        cardsContainer.insertBefore(card, cardsContainer.firstChild);
+
+        // Forçar reflow para animar a entrada
+        card.offsetHeight;
+        card.style.opacity = '1';
+        card.style.transform = 'none';
+
+        // Mostrar Toast de Sucesso e limpar o formulário
+        showToast('Mensagem enviada com carinho! 💛');
+        form.reset();
+      } else {
+        alert(result.message || 'Erro ao enviar recado.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Ocorreu um erro ao enviar seu recado. Por favor, tente novamente.');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalText;
+    }
+  });
 }
 
 

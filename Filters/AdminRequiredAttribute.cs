@@ -9,17 +9,13 @@ namespace CHA_CASA_NOVA_ADRIANA.Filters
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             var session = context.HttpContext.Session;
-            var fingerprintSalvo = session.GetString("AdminFingerprint");
-            var fingerprintAtual = AdminSecurity.BuildDeviceFingerprint(context.HttpContext);
 
-            if (session.GetString("AdminLogado") == "true" &&
-                fingerprintSalvo == fingerprintAtual)
+            if (session.GetString("AdminLogado") == "true")
             {
                 return;
             }
 
             session.Remove("AdminLogado");
-            session.Remove("AdminFingerprint");
             context.Result = new RedirectToActionResult("Index", "Login", null);
         }
     }

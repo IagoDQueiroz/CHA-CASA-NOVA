@@ -220,6 +220,10 @@
 }
 
 @media (max-width: 768px) {
+  .agradecimento__bg {
+    background: linear-gradient(rgba(13, 11, 11, 0.8), rgba(13, 11, 11, 0.85)),
+                url('../images/backgrounds/Background-agradecimento-mobile.jpg') center/cover no-repeat;
+  }
   .agradecimento__title {
     font-size: var(--fs-2xl);
   }

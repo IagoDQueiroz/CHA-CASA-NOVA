@@ -25,7 +25,7 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
                 .ToList();
 
             ViewBag.Recados = _context.Recado
-                .OrderByDescending(r => r.DataCriacao)
+                .OrderByDescending(r => r.Id)
                 .ToList();
 
             return View(produtos);
@@ -94,9 +94,11 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
             ViewBag.Doados = produtos.Count(p => p.Doado);
             ViewBag.Disponiveis = produtos.Count(p => !p.Doado);
             ViewBag.ValorTotal = produtos.Sum(p => p.Valor);
+            ViewBag.ValorDoados = produtos.Where(p => p.Doado).Sum(p => p.Valor);
+            ViewBag.ValorDisponivel = produtos.Where(p => !p.Doado).Sum(p => p.Valor);
 
             ViewBag.Recados = _context.Recado
-                .OrderByDescending(r => r.DataCriacao)
+                .OrderByDescending(r => r.Id)
                 .ToList();
 
             return View(produtos);
@@ -140,7 +142,7 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
                 _context.Add(produto);
                 _context.SaveChanges();
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Admin));
             }
 
             return View(produto);
@@ -196,7 +198,7 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
 
                 _context.SaveChanges();
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Admin));
             }
 
             return View("Create", produto);
@@ -234,7 +236,7 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
                 _context.SaveChanges();
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Admin");
         }
 
         [HttpPost]
@@ -279,17 +281,26 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
                 return RedirectToAction("Details", new { id });
             }
 
-            produto.Doado = true;
-            produto.Doador = nome;
-            produto.TelefoneDoador = telefone;
-            produto.EmailDoador = email;
-            produto.FormaEntrega = formaEntrega;
+            try
+            {
+                produto.Doado = true;
+                produto.Doador = nome;
+                produto.TelefoneDoador = telefone;
+                produto.EmailDoador = email;
+                produto.FormaEntrega = formaEntrega;
+                produto.DataDoacao = DateTime.Now;
 
-            _context.Produto.Update(produto);
-            _context.SaveChanges();
+                _context.Produto.Update(produto);
+                _context.SaveChanges();
 
-            TempData["MensagemSucesso"] = "Doação registrada com sucesso!";
-            return RedirectToAction("Obrigado", new { id });
+                TempData["MensagemSucesso"] = "Doação registrada com sucesso!";
+                return RedirectToAction("Obrigado", new { id });
+            }
+            catch (Exception)
+            {
+                TempData["MensagemErro"] = "Ocorreu um erro ao registrar sua doação. Por favor, tente novamente mais tarde.";
+                return RedirectToAction("Details", new { id });
+            }
         }
 
         [HttpGet]
@@ -322,12 +333,13 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
             produto.TelefoneDoador = null;
             produto.EmailDoador = null;
             produto.FormaEntrega = null;
+            produto.DataDoacao = null;
 
             _context.Produto.Update(produto);
             _context.SaveChanges();
 
             TempData["MensagemSucesso"] = "Doação desfeita com sucesso.";
-            return RedirectToAction("Details", new { id });
+            return RedirectToAction("Admin");
         }
 
         private bool ProdutoExists(int id)
@@ -381,22 +393,33 @@ namespace CHA_CASA_NOVA_ADRIANA.Controllers
 
             if (string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(mensagem))
             {
-                TempData["MensagemErro"] = "Preencha o nome e a mensagem.";
-                return RedirectToAction("Index", "Produtos", null, fragment: "recados");
+                return Json(new { success = false, message = "Preencha o nome e a mensagem." });
             }
 
-            var recado = new Recado
+            try
             {
-                Nome = nome,
-                Mensagem = mensagem,
-                DataCriacao = DateTime.Now
-            };
+                var recado = new Recado
+                {
+                    Nome = nome,
+                    Mensagem = mensagem,
+                    DataCriacao = DateTime.Now
+                };
 
-            _context.Recado.Add(recado);
-            _context.SaveChanges();
+                _context.Recado.Add(recado);
+                _context.SaveChanges();
 
-            TempData["MensagemSucesso"] = "Mensagem enviada com carinho! 💛";
-            return RedirectToAction("Index", "Produtos", null, fragment: "recados");
+                var cultura = System.Globalization.CultureInfo.GetCultureInfo("pt-BR");
+                return Json(new { 
+                    success = true, 
+                    nome = recado.Nome, 
+                    mensagem = recado.Mensagem, 
+                    data = recado.DataCriacao.ToString("dd MMM yyyy", cultura) 
+                });
+            }
+            catch (Exception)
+            {
+                return Json(new { success = false, message = "Ocorreu um erro ao salvar o recado. O banco de dados pode estar indisponível no momento." });
+            }
         }
 
         [HttpPost]

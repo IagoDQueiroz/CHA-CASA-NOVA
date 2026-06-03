@@ -4,6 +4,7 @@ using CHA_CASA_NOVA_ADRIANA.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CHA_CASA_NOVA_ADRIANA.Migrations
 {
     [DbContext(typeof(CHA_CASA_NOVA_ADRIANAContext))]
-    partial class CHA_CASA_NOVA_ADRIANAContextModelSnapshot : ModelSnapshot
+    [Migration("20260531185153_AdicionarDataDoacao")]
+    partial class AdicionarDataDoacao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

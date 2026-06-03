@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using CHA_CASA_NOVA_ADRIANA.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,11 +24,11 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(20);
-    options.Cookie.Name = "__Host-ChaCasaNova.Session";
+    options.Cookie.Name = "ChaCasaNova.Session";
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
-    options.Cookie.SameSite = SameSiteMode.Strict;
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.SameSite = SameSiteMode.Lax;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.None;
 });
 
 var app = builder.Build();
@@ -36,14 +36,15 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<CHA_CASA_NOVA_ADRIANAContext>();
-    context.Database.EnsureCreated();
+    context.Database.Migrate();
 }
 
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler("/Produtos/Index");
     app.UseHsts();
 }
+app.UseStatusCodePagesWithReExecute("/Produtos/Index");
 
 app.UseHttpsRedirection();
 

@@ -1,0 +1,17 @@
+{
+  "short_name": "Chá Vitória Rodrigo",
+  "name": "Chá de Casa Nova - Vitória & Rodrigo",
+  "icons": [
+    {
+      "src": "/images/Icone/casa_dourada_rabisco.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#121010",
+  "theme_color": "#d8b189",
+  "display": "standalone",
+  "orientation": "portrait"
+}

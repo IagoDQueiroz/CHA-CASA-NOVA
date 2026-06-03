@@ -16,6 +16,8 @@
   
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="~/images/Icone/casa_dourada_rabisco.svg">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#d8b189">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,12 +40,9 @@
         <h1 class="admin-header__title">Painel Administrativo</h1>
       </div>
       <div class="admin-header__actions">
-        <a href="@Url.Action("Index", "Produtos")" class="btn btn--ghost" style="color: var(--color-dark-2); border-color: var(--color-cream-soft); background: #fff; padding: 0.6rem 1.2rem; display: inline-flex; align-items: center;">
-          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" aria-hidden="true" style="margin-right: 4px;">
-            <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-          </svg>
-          Ver Site
-        </a>
+        <button id="pwa-install-btn" class="btn btn--primary" style="display: none; align-items: center; gap: 4px; padding: 0.6rem 1.2rem; cursor: pointer;">
+          📲 Instalar App
+        </button>
         <a href="@Url.Action("Logout", "Login")" class="btn btn--outline-gold" style="padding: 0.6rem 1.2rem;">
           Sair
         </a>
@@ -71,19 +70,19 @@
       <section class="admin-stats">
         <div class="stat-card">
           <span class="stat-card__number">@ViewBag.Total</span>
-          <span class="stat-card__label">Total de Itens</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-card__number" style="color: #2c9c5c;">@ViewBag.Disponiveis</span>
-          <span class="stat-card__label">Itens Disponíveis</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-card__number" style="color: var(--color-gold-dark);">@ViewBag.Doados</span>
-          <span class="stat-card__label">Itens Presenteados</span>
+          <span class="stat-card__label">Total de Itens (@ViewBag.Doados doados / @ViewBag.Disponiveis disp.)</span>
         </div>
         <div class="stat-card">
           <span class="stat-card__number">@(((decimal)ViewBag.ValorTotal).ToString("C", cultura))</span>
           <span class="stat-card__label">Valor Total do Catálogo</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card__number" style="color: var(--color-gold-dark);">@(((decimal)ViewBag.ValorDoados).ToString("C", cultura))</span>
+          <span class="stat-card__label">Valor Recebido (Doados)</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card__number" style="color: #2c9c5c;">@(((decimal)ViewBag.ValorDisponivel).ToString("C", cultura))</span>
+          <span class="stat-card__label">Valor Pendente (Disponíveis)</span>
         </div>
       </section>
 
@@ -193,6 +192,68 @@
               }
             </tbody>
           </table>
+      </section>
+
+      <!-- Histórico de Doações (Log) -->
+      <div class="admin-title-row" style="margin-top: var(--space-xl);">
+        <div>
+          <h2 class="admin-title">Histórico de Doações (Log)</h2>
+        </div>
+      </div>
+
+      <section class="admin-table-section" style="margin-bottom: var(--space-xl);">
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Data/Hora</th>
+                <th>Doador</th>
+                <th>Contato</th>
+                <th>Presente</th>
+                <th>Entrega</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              @{
+                  var doacoesLog = Model!.Where(p => p.Doado).OrderByDescending(p => p.DataDoacao).ToList();
+              }
+              @if (doacoesLog.Count == 0)
+              {
+                  <tr>
+                    <td colspan="6" style="text-align: center; color: rgba(40,35,35,0.4); padding: 30px 0;">
+                      Nenhuma doação registrada no histórico.
+                    </td>
+                  </tr>
+              }
+              else
+              {
+                  @foreach (var p in doacoesLog)
+                  {
+                      <tr>
+                        <td style="font-weight: 600;">@(p.DataDoacao?.ToString("dd MMM yyyy HH:mm", cultura) ?? "-")</td>
+                        <td><strong>@(p.Doador ?? "Anônimo")</strong></td>
+                        <td style="font-size: 11px; color: rgba(40,35,35,0.6);">
+                          @(p.TelefoneDoador ?? "-") @(!string.IsNullOrEmpty(p.EmailDoador) ? $" / {p.EmailDoador}" : "")
+                        </td>
+                        <td style="font-weight: 600; color: var(--color-gold-dark);">@p.Nome</td>
+                        <td>
+                          <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; background: rgba(214, 177, 137, 0.1); padding: 4px 8px; border-radius: var(--radius-sm); border: 1px solid rgba(214, 177, 137, 0.2);">
+                            @(p.FormaEntrega ?? "Não informada")
+                          </span>
+                        </td>
+                        <td>
+                          <form method="POST" action="@Url.Action("DesfazerDoacao", "Produtos")" onsubmit="return confirm('Deseja realmente cancelar a doação deste item e devolvê-lo à lista?');" style="display:inline;">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@p.Id" />
+                            <button type="submit" class="admin-acoes-btn admin-acoes-btn--delete">Liberar Item</button>
+                          </form>
+                        </td>
+                      </tr>
+                  }
+              }
+            </tbody>
+          </table>
         </div>
       </section>
     </div>
@@ -222,6 +283,53 @@
         toast.classList.remove('show');
       }, 4000);
     }
+
+    // Registro do Service Worker para PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('Service Worker registrado!', reg))
+          .catch(err => console.error('Erro ao registrar Service Worker:', err));
+      });
+    }
+
+    // Capturar o evento de instalação do PWA
+    let deferredPrompt;
+    const installBtn = document.getElementById('pwa-install-btn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Prevenir que o Chrome mostre o prompt automático
+      e.preventDefault();
+      // Guardar o evento para ser acionado depois
+      deferredPrompt = e;
+      // Mostrar o botão de instalação customizado na tela de Admin
+      if (installBtn) {
+        installBtn.style.display = 'inline-flex';
+      }
+    });
+
+    if (installBtn) {
+      installBtn.addEventListener('click', async () => {
+        if (!deferredPrompt) return;
+        // Mostrar o prompt de instalação
+        deferredPrompt.prompt();
+        // Aguardar a escolha do usuário
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`Escolha de instalação PWA: ${outcome}`);
+        // Limpar o prompt deferred, pois só pode ser usado uma vez
+        deferredPrompt = null;
+        // Ocultar o botão de instalação
+        installBtn.style.display = 'none';
+      });
+    }
+
+    window.addEventListener('appinstalled', (evt) => {
+      console.log('Aplicativo instalado com sucesso!');
+      if (installBtn) {
+        installBtn.style.display = 'none';
+      }
+      showToast('Aplicativo instalado com sucesso! 🎉');
+    });
   </script>
 </body>
 </html>

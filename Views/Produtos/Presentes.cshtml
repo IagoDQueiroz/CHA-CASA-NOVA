@@ -18,6 +18,8 @@
 
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="~/images/Icone/casa_dourada_rabisco.svg">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#d8b189">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -230,5 +232,14 @@
   <!-- Scripts -->
   <script src="~/js/main.js" asp-append-version="true"></script>
   <script src="~/js/presentes.js" asp-append-version="true"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('Service Worker registrado!', reg))
+          .catch(err => console.error('Erro ao registrar Service Worker:', err));
+      });
+    }
+  </script>
 </body>
 </html>

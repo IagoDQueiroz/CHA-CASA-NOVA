@@ -19,6 +19,8 @@
 
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="~/images/Icone/casa_dourada_rabisco.svg">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#d8b189">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -119,7 +121,10 @@
   <!-- ============ HERO (INÍCIO) ============ -->
   <section class="hero" id="inicio">
     <div class="hero__bg" aria-hidden="true">
-      <img src="~/images/backgrounds/Background-hero.png" alt="Plano de fundo Vitória e Rodrigo" class="hero__bg-img">
+      <picture>
+        <source media="(max-width: 768px)" srcset="@Url.Content("~/images/backgrounds/Background-hero-mobile.jpg")">
+        <img src="~/images/backgrounds/Background-hero.png" alt="Plano de fundo Vitória e Rodrigo" class="hero__bg-img">
+      </picture>
     </div>
     <div class="hero__overlay" aria-hidden="true"></div>
     <div class="hero__glow" aria-hidden="true"></div>
@@ -520,5 +525,14 @@
   <!-- Scripts -->
   <script src="~/js/main.js" asp-append-version="true"></script>
   <script src="~/js/presentes.js" asp-append-version="true"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('Service Worker registrado!', reg))
+          .catch(err => console.error('Erro ao registrar Service Worker:', err));
+      });
+    }
+  </script>
 </body>
 </html>
